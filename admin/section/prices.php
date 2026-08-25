@@ -1,0 +1,147 @@
+ <?php 
+ $models = [
+    1  => ["brand" => "Apple",   "model_name" => "iPhone 13"],
+    2  => ["brand" => "Apple",   "model_name" => "iPhone 13 Mini"],
+    3  => ["brand" => "Apple",   "model_name" => "iPhone 13 Pro"],
+    4  => ["brand" => "Apple",   "model_name" => "iPhone 13 Pro Max"],
+    5  => ["brand" => "Apple",   "model_name" => "iPhone 14"],
+    6  => ["brand" => "Apple",   "model_name" => "iPhone 14 Plus"],
+    7  => ["brand" => "Apple",   "model_name" => "iPhone 14 Pro"],
+    8  => ["brand" => "Apple",   "model_name" => "iPhone 14 Pro Max"],
+    9  => ["brand" => "Apple",   "model_name" => "iPhone 15"],
+    10 => ["brand" => "Apple",   "model_name" => "iPhone 15 Pro"],
+    11 => ["brand" => "Apple",   "model_name" => "iPhone 15 Pro Max"],
+    12 => ["brand" => "Apple",   "model_name" => "iPhone 16"],
+    13 => ["brand" => "Apple",   "model_name" => "iPhone 16 Plus"],
+    14 => ["brand" => "Apple",   "model_name" => "iPhone 16 Pro"],
+    15 => ["brand" => "Apple",   "model_name" => "iPhone 16 Pro Max"],
+    16 => ["brand" => "Samsung", "model_name" => "Samsung S25 Ultra"],
+    17 => ["brand" => "Samsung", "model_name" => "Samsung S25 Plus"],
+    18 => ["brand" => "Samsung", "model_name" => "Samsung S24 Plus"],
+    19 => ["brand" => "Samsung", "model_name" => "Samsung S24 Ultra"],
+    20 => ["brand" => "Samsung", "model_name" => "Samsung S23 Plus"],
+    21 => ["brand" => "Samsung", "model_name" => "Samsung S23 Ultra"],
+    22 => ["brand" => "Samsung", "model_name" => "Samsung S26 Ultra"],
+    23 => ["brand" => "Samsung", "model_name" => "Samsung S26 Plus"],
+    24 => ["brand" => "Samsung", "model_name" => "Samsung S23 Ultra"],
+    25 => ["brand" => "Samsung", "model_name" => "Samsung A37"],
+];
+$prices = [
+ 1 => [
+        "base" => 1200,
+        "storage_128" => 0, "storage_256" => 80, "storage_512" => 200,
+        "condition_flawless" => 0, "condition_good" => -50, "condition_fair" => -200,
+        "acc_charger" => 10, "acc_box" => 50, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    2 => [
+        "base" => 1000,
+        "storage_128" => 0, "storage_256" => 70, "storage_512" => 150,
+        "condition_flawless" => 0, "condition_good" => -40, "condition_fair" => -150,
+        "acc_charger" => 10, "acc_box" => 60, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    3 => [
+        "base" => 1400,
+        "storage_128" => 0, "storage_256" => 100, "storage_512" => 180,
+        "condition_flawless" => 0, "condition_good" => -90, "condition_fair" => -240,
+        "acc_charger" => 10, "acc_box" => 80, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    4 => [
+        "base" => 1600,
+        "storage_128" => 0, "storage_256" => 150, "storage_512" => 230,
+        "condition_flawless" => 0, "condition_good" => -90, "condition_fair" => -280,
+        "acc_charger" => 10, "acc_box" => 120, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    5 => [
+        "base" => 2000,
+        "storage_128" => 0, "storage_256" => 100, "storage_512" => 180,
+        "condition_flawless" => 0, "condition_good" => -90, "condition_fair" => -300,
+        "acc_charger" => 10, "acc_box" => 150, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    6 => [
+        "base" => 1700,
+        "storage_128" => 0, "storage_256" => 150, "storage_512" => 280,
+        "condition_flawless" => 0, "condition_good" => -90, "condition_fair" => -250,
+        "acc_charger" => 10, "acc_box" => 150, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    7 => [
+        "base" => 2100,
+        "storage_128" => 0, "storage_256" => 150, "storage_512" => 280,
+        "condition_flawless" => 0, "condition_good" => -90, "condition_fair" => -300,
+        "acc_charger" => 10, "acc_box" => 150, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    8 => [
+        "base" => 2500,
+        "storage_128" => 0, "storage_256" => 250, "storage_512" => 350,
+        "condition_flawless" => 0, "condition_good" => -90, "condition_fair" => -300,
+        "acc_charger" => 10, "acc_box" => 180, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    9 => [
+        "base" => 2200,
+        "storage_128" => 0, "storage_256" => 150, "storage_512" => 350,
+        "condition_flawless" => 0, "condition_good" => -100, "condition_fair" => -300,
+        "acc_charger" => 10, "acc_box" => 100, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    10 => [
+        "base" => 2350,
+        "storage_128" => 0, "storage_256" => 180, "storage_512" => 350,
+        "condition_flawless" => 0, "condition_good" => -100, "condition_fair" => -350,
+        "acc_charger" => 10, "acc_box" => 150, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    11 => [
+        "base" => 2500,
+        "storage_128" => 0, "storage_256" => 200, "storage_512" => 400,
+        "condition_flawless" => 0, "condition_good" => -200, "condition_fair" => -400,
+        "acc_charger" => 10, "acc_box" => 150, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    12 => [
+        "base" => 2000,
+        "storage_128" => 0, "storage_256" => 180, "storage_512" => 300,
+        "condition_flawless" => 0, "condition_good" => -150, "condition_fair" => -300,
+        "acc_charger" => 10, "acc_box" => 100, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+
+    14 => [
+        "base" => 3000,
+        "storage_128" => 0, "storage_256" => 200, "storage_512" => 400,
+        "condition_flawless" => 0, "condition_good" => -200, "condition_fair" => -400,
+        "acc_charger" => 10, "acc_box" => 150, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+
+    15 => [
+        "base" => 3800,
+        "storage_128" => 0, "storage_256" => 200, "storage_512" => 450,
+        "condition_flawless" => 0, "condition_good" => -200, "condition_fair" => -400,
+        "acc_charger" => 10, "acc_box" => 250, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    17 => [
+        "base" => 3500,
+        "storage_128" => 0, "storage_256" => 200, "storage_512" => 450,
+        "condition_flawless" => 0, "condition_good" => -150, "condition_fair" => -400,
+        "acc_charger" => 10, "acc_box" => 150, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    20 => [
+        "base" => 2500,
+        "storage_128" => 0, "storage_256" => 150, "storage_512" => 350,
+        "condition_flawless" => 0, "condition_good" => -150, "condition_fair" => -300,
+        "acc_charger" => 10, "acc_box" => 100, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    22 => [
+        "base" => 3500,
+        "storage_128" => 0, "storage_256" => 250, "storage_512" => 450,
+        "condition_flawless" => 0, "condition_good" => -150, "condition_fair" => -350,
+        "acc_charger" => 10, "acc_box" => 200, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+    24 => [
+        "base" => 2500,
+        "storage_128" => 0, "storage_256" => 150, "storage_512" => 250,
+        "condition_flawless" => 0, "condition_good" => -100, "condition_fair" => -200,
+        "acc_charger" => 10, "acc_box" => 100, "acc_earbuds" => 10, "acc_warranty" => 10,
+    ],
+]; 
+$blank_price = [
+    "base" => "-",
+    "storage_128" => "-", "storage_256" => "-", "storage_512" => "-",
+    "condition_flawless" => "-", "condition_good" => "-", "condition_fair" => "-",
+    "acc_charger" => "-", "acc_box" => "-", "acc_earbuds" => "-", "acc_warranty" => "-",
+];
+?>

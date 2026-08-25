@@ -1,0 +1,20 @@
+RewriteEngine On
+RewriteBase /sellmyphonedubai/
+
+# index => home
+RewriteRule ^index/?$ index.php?page=home [L,QSA]
+
+# root => home
+RewriteRule ^$ index.php?page=home [L,QSA]
+
+# blog-details/post-slug => index.php?page=blog-details&slug=post-slug
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^blog/([^/]+)/?$ index.php?page=blog-details&slug=$1 [L,QSA]
+
+# pretty URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ index.php?page=$1 [L,QSA]
+RewriteEngine On
+RewriteBase /sellmyphonedubai/
