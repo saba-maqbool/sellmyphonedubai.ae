@@ -67,7 +67,7 @@ if ($about_row = mysqli_fetch_assoc($about_result)) {
                 Connect with us 
             </a>
 
-            <a href="https://wa.me/971505556779" class="btn-primary" target="_blank" rel="noopener">
+            <a href="https://wa.me/+971502166562" class="btn-primary" target="_blank" rel="noopener">
                 <i class="fab fa-whatsapp"></i>
                 WhatsApp for Quote
             </a>

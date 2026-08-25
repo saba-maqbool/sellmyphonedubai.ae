@@ -2,7 +2,7 @@
 require_once(__DIR__ . "/../admin/include/db-connect.php");
 
 $contact = [
-    'phone'          => '+971 50 555 6779',
+    'phone'          => '+971 50 216 6562',
     'email'          => 'info@sellphonedubai.com',
     'address'        => "Al Quoz First behind BMW showroom,\nSheikh Zayed Road, Dubai",
     'hours_weekday'  => 'Sun - Thu: 9AM - 10PM',
