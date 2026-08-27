@@ -64,17 +64,17 @@
   <div class="tab-pane fade" id="pills-condition" role="tabpanel" aria-labelledby="pills-condition-tab" tabindex="0">
      <div class="condi-container">
             <div class="condi-card" data-key="condition_flawless">
-                <h2 class="h2con">Flawless</h2>
+                <span class="h2con">Flawless</span>
                 <p>Looks brand new, no scratches or dents.</p>
             </div>
 
             <div class="condi-card" data-key="condition_good">
-                <h2 class="h2con">Good</h2>
+                <span class="h2con">Good</span>
                  <p>Light signs of wear, fully working.</p>
             </div>
 
             <div class="condi-card" data-key="condition_fair">
-                <h2 class="h2con">Fair/Cracked</h2>
+                <span class="h2con">Fair/Cracked</span>
                  <p>Heavy wear, cracked screen but functional.</p>
             </div>
         </div>
@@ -90,7 +90,7 @@
         <div class="custom-control custom-checkbox image-checkbox">
             <input type="checkbox" class="custom-control-input" id="cs1a" data-key="acc_charger">
             <label class="custom-control-label" for="cs1a">
-                 <h2 class="h2con">Charger</h2>
+                 <span class="h2con">Charger</span>
                  <span class="price-tag" data-price-for="acc_charger">Loading...</span>
             </label>
         </div>
@@ -99,7 +99,7 @@
         <div class="custom-control custom-checkbox image-checkbox">
             <input type="checkbox" class="custom-control-input" id="cs1b" data-key="acc_box">
             <label class="custom-control-label" for="cs1b">
-                <h2 class="h2con">Box</h2>
+                <span class="h2con">Box</span>
                 <span class="price-tag" data-price-for="acc_box">Loading...</span>
             </label>
         </div>
@@ -108,7 +108,7 @@
         <div class="custom-control custom-checkbox image-checkbox">
             <input type="checkbox" class="custom-control-input" id="cs1c" data-key="acc_earbuds">
             <label class="custom-control-label" for="cs1c">
-                <h2 class="h2con">Earbuds</h2>
+                <span class="h2con">Earbuds</span>
                 <span class="price-tag" data-price-for="acc_earbuds">Loading...</span>
             </label>
         </div>
@@ -117,7 +117,7 @@
         <div class="custom-control custom-checkbox image-checkbox">
             <input type="checkbox" class="custom-control-input" id="cs1d" data-key="acc_warranty">
             <label class="custom-control-label" for="cs1d">
-                 <h2 class="h2con">Warrenty Card</h2>
+                 <span class="h2con">Warrenty Card</span>
                  <span class="price-tag" data-price-for="acc_warranty">Loading...</span>
             </label>
         </div>
@@ -133,7 +133,7 @@
         <div class="row justify-content-center text-center estimate-card-row" style="padding:30px 0; border:2px solid #0B1E3F; border-radius:30px; margin: 2% 20% 2% 20%; ">
             <div class="col-md-6">
                 <h2 class="h2con" style="margin-bottom:10px;">Sell Now Upto</h2>
-                <i class="fa-solid fa-sack-dollar"></i><h1  class="est-price fw-bold mt-4" id="estimatePriceDisplay">Calculating...</h1>
+                <i class="fa-solid fa-sack-dollar"></i><h2  class="est-price fw-bold mt-4" id="estimatePriceDisplay">Calculating...</h2>
                 <p class="text-muted fw-bold mt-4" id="estimateSummary" style="color:#0B1E3F;"></p>
                 <p id="estimateNote" style="color:#797979; font-size:13px;"></p>
                 <h6 style="margin-bottom:10px; color:red; font-weight:200;">Note: Your "Sell Now" price is determined by our experts upon device assessment.</h6>

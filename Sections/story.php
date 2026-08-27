@@ -31,7 +31,7 @@ if ($story_row = mysqli_fetch_assoc($story_result)) {
 <section class="story" id="story">
     <div class="section-header">
         <span class="section-tag"><?php echo htmlspecialchars($story['kicker']); ?></span>
-        <h3 class="section-title"><?php echo htmlspecialchars($story['heading']); ?> <br> <span><?php echo htmlspecialchars($story['heading_highlight']); ?></span></h3>
+        <h2 class="section-title"><?php echo htmlspecialchars($story['heading']); ?> <br> <span><?php echo htmlspecialchars($story['heading_highlight']); ?></span></h2>
         <p class="section-subtitle"><?php echo htmlspecialchars($story['description']); ?></p>
     </div>
     <div class="about-container">

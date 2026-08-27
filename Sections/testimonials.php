@@ -55,7 +55,7 @@ function testimonial_initials($name) {
 <section class="testimonials" id="testimonials">
         <div class="section-header">
             <span class="section-tag"><?php echo htmlspecialchars($testimonials_section['kicker']); ?></span>
-            <h3 class="section-title" style="color:white;"><?php echo htmlspecialchars($testimonials_section['heading']); ?></h3>
+            <h2 class="section-title" style="color:white;"><?php echo htmlspecialchars($testimonials_section['heading']); ?></h2>
             <p class="section-subtitle" style="color:white;"><?php echo htmlspecialchars($testimonials_section['description']); ?></p>
         </div>
         <div class="testimonials-grid">

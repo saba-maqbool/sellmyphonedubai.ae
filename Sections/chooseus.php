@@ -33,7 +33,7 @@ if ($chooseus_row = mysqli_fetch_assoc($chooseus_result)) {
 <section class="why-choose-us" id="why-choose-us">
     <div class="section-header">
         <span class="section-tag"><?php echo htmlspecialchars($chooseus_section['kicker']); ?></span>
-        <h3 class="section-title"><?php echo $chooseus_section['heading']; ?></h3>
+        <h2 class="section-title"><?php echo $chooseus_section['heading']; ?></h2>
         <p class="section-subtitle"><?php echo htmlspecialchars($chooseus_section['description']); ?></p>
     </div>
 

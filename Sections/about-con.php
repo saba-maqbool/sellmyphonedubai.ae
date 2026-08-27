@@ -35,9 +35,9 @@ if ($about_row = mysqli_fetch_assoc($about_result)) {
 <section class="pickup-section" id="about-con">
     <div class="pickup-container">
         <div class="pickup-map-wrap">
-            <iframe
+           <iframe
                 class="pickup-map"
-                src="https://maps.google.com/maps?q=Dubai,UAE&z=11&output=embed"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3611.708536854531!2d55.223404099999996!3d25.1455429!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6a2a35b4ef5d%3A0xffd4276dc990b3b5!2s3rd%2C%20Showroom%20-%2033%20Sheikh%20Zayed%20Rd%20-%20Al%20Qouz%20Ind.first%20-%20Al%20Quoz%20-%20Dubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1787822747607!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
                 title="Dubai coverage map">

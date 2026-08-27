@@ -17,13 +17,13 @@ $site_settings = [
     'footer_about_text'      => "Dubai's trusted platform for selling used phones with instant cash payment and free pickup service across all areas.",
     'footer_phone'           => '+971 50 216 6562',
     'footer_whatsapp'        => '+971 50 216 6562',
-    'footer_email'           => 'info@sellmyphonedubai.com',
+    'footer_email'           => 'info@sellmyphonedubai.ae',
     'footer_address'         => 'Al Quoz 3rd, Showroom No 33, Sheikh Zayed Road, Dubai',
     'facebook_url'           => '#',
     'instagram_url'          => '#',
     'twitter_url'            => '#',
     'linkedin_url'           => '#',
-    'copyright_text'         => '© 2026 SellPhoneDubai. All rights reserved.',
+    'copyright_text'         => '© 2026 sellmyphonedubai. All rights reserved.',
 ];
 
 $settings_result = mysqli_query($conn, "SELECT * FROM site_settings WHERE id = 1 LIMIT 1");
