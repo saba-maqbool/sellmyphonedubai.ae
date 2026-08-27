@@ -68,8 +68,8 @@ function testimonial_initials($name) {
                 <div class="testimonial-author">
                     <div class="author-avatar"><?php echo htmlspecialchars(testimonial_initials($item['title'])); ?></div>
                     <div class="author-info">
-                        <h4><?php echo htmlspecialchars($item['title']); ?></h4>
-                        <p><?php echo htmlspecialchars($item['subtitle']); ?></p>
+                        <span class="author-name"><?php echo htmlspecialchars($item['title']); ?></span>
+                        <p class="author-add"><?php echo htmlspecialchars($item['subtitle']); ?></p>
                     </div>
                 </div>
             </div>

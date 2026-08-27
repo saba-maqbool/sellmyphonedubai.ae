@@ -1117,6 +1117,15 @@ position: absolute;
     border-top: 2px solid rgb(229, 229, 229);
     line-height: 5px;
 }
+.author-name{
+    font-size: 15px;
+    font-weight: 500;
+
+}
+.author-add{
+    margin-top: 20px;
+
+}
 
 .faq-section{
     padding: 80px 24px;
