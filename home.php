@@ -6,5 +6,8 @@
     <?php require_once ("Sections/process.php"); ?>
     <?php require_once ("Sections/chooseus.php"); ?>
     <?php require_once ("Sections/testimonials.php"); ?>
-    <?php require_once ("Sections/faq.php"); ?>
+    <?php require_once ("Sections/quicklink.php"); ?>
     <?php require_once ("Sections/about-con.php"); ?>
+    <?php require_once ("Sections/faq.php"); ?>
+     <?php require_once ("Sections/guide.php"); ?>
+    <?php require_once ("Sections/final-cta.php"); ?>

@@ -12,10 +12,12 @@ $section_labels = [
     'process'      => ['label' => 'How It Works',             'icon' => 'fa-solid fa-diagram-project'],
     'chooseus'     => ['label' => 'Why Choose Us',            'icon' => 'fa-solid fa-star'],
     'testimonials' => ['label' => 'Testimonials',             'icon' => 'fa-solid fa-comment-dots'],
+    'quicklink'    => ['label' => 'Quick Links',              'icon' => 'fa-solid fa-link'],
     'faq'          => ['label' => 'FAQ',                      'icon' => 'fa-solid fa-circle-question'],
+    'guide'        => ['label' => 'Guide / Info Block',       'icon' => 'fa-solid fa-book-open'],
     'about_con'    => ['label' => 'About / CTA',              'icon' => 'fa-solid fa-circle-info'],
 ];
-$editable_sections = ['hero', 'brand', 'process', 'chooseus', 'testimonials' ,'faq', 'about_con'];
+$editable_sections = ['hero', 'brand', 'process', 'chooseus', 'testimonials','quicklink' , 'faq' , 'guide', 'about_con'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_section'])) {
     $id = (int) $_POST['section_id'];
@@ -88,12 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_item'])) {
         }
     }
     $content = trim($_POST['content'] ?? '');
+    $link = trim($_POST['link'] ?? '');
 
     $order_result = mysqli_query($conn, "SELECT COALESCE(MAX(sort_order),0)+1 AS next_order FROM home_section_items WHERE section_id = " . $section_id);
     $next_order = mysqli_fetch_assoc($order_result)['next_order'];
 
-    $stmt = mysqli_prepare($conn, "INSERT INTO home_section_items (section_id, icon, image, title, subtitle, content, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    mysqli_stmt_bind_param($stmt, "isssssi", $section_id, $icon, $image_path, $title, $subtitle, $content, $next_order);
+    $stmt = mysqli_prepare($conn, "INSERT INTO home_section_items (section_id, icon, image, title, subtitle, content, link, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "issssssi", $section_id, $icon, $image_path, $title, $subtitle, $content, $link, $next_order);
     if (mysqli_stmt_execute($stmt)) {
         $success_msg = "Item added successfully.";
     } else {
@@ -129,13 +132,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_item'])) {
     }
 
        $content = trim($_POST['content'] ?? '');
+       $link = trim($_POST['link'] ?? '');
 
     if ($image_path) {
-        $stmt = mysqli_prepare($conn, "UPDATE home_section_items SET icon=?, image=?, title=?, subtitle=?, content=? WHERE id=?");
-        mysqli_stmt_bind_param($stmt, "sssssi", $icon, $image_path, $title, $subtitle, $content, $item_id);
+        $stmt = mysqli_prepare($conn, "UPDATE home_section_items SET icon=?, image=?, title=?, subtitle=?, content=?, link=? WHERE id=?");
+        mysqli_stmt_bind_param($stmt, "ssssssi", $icon, $image_path, $title, $subtitle, $content, $link, $item_id);
     } else {
-        $stmt = mysqli_prepare($conn, "UPDATE home_section_items SET icon=?, title=?, subtitle=?, content=? WHERE id=?");
-        mysqli_stmt_bind_param($stmt, "ssssi", $icon, $title, $subtitle, $content, $item_id);
+        $stmt = mysqli_prepare($conn, "UPDATE home_section_items SET icon=?, title=?, subtitle=?, content=?, link=? WHERE id=?");
+        mysqli_stmt_bind_param($stmt, "sssssi", $icon, $title, $subtitle, $content, $link, $item_id);
     }
     if (mysqli_stmt_execute($stmt)) {
         $success_msg = "Item updated successfully.";
@@ -1187,6 +1191,221 @@ if ($active_section) {
         });
     });
 </script>
+    <?php elseif ($active_key === 'quicklink' && $active_section): ?>
+
+    <div class="card" style="border-radius:14px; padding:24px; margin-bottom:24px;">
+        <h5 style="margin-bottom:16px;"><i class="fa-solid fa-link me-2"></i>Quick Links — Section Content</h5>
+
+        <form method="POST" action="home-sections.php?section=quicklink">
+            <input type="hidden" name="section_id" value="<?php echo (int) $active_section['id']; ?>">
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Kicker (small line above heading)</label>
+                    <input type="text" name="kicker" class="form-control" value="<?php echo htmlspecialchars($active_section['kicker']); ?>">
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Heading</label>
+                    <input type="text" name="heading" class="form-control" value="<?php echo htmlspecialchars($active_section['heading']); ?>">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Subtitle text</label>
+                    <textarea name="description" class="form-control" rows="2"><?php echo htmlspecialchars($active_section['description']); ?></textarea>
+                </div>
+                <input type="hidden" name="heading_highlight" value="">
+                <input type="hidden" name="extra_1" value="<?php echo htmlspecialchars($active_section['extra_1'] ?? ''); ?>">
+                <input type="hidden" name="extra_2" value="<?php echo htmlspecialchars($active_section['extra_2'] ?? ''); ?>">
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" name="update_section" class="btn" style="background:#0B1E3F; color:#fff;">Save Section Content</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card" style="border-radius:14px; padding:24px;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 style="margin:0;"><i class="fa-solid fa-th-large me-2"></i>Quick Link Cards</h5>
+            <button type="button" class="btn btn-sm" style="background:#0B1E3F; color:#fff;" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                <i class="fa-solid fa-plus me-1"></i> Add Card
+            </button>
+        </div>
+
+        <div class="row row-cols-1 row-cols-sm-3 g-3">
+            <?php foreach ($active_items as $item): ?>
+                <div class="col">
+                    <div class="card h-100" style="border-radius:12px; padding:14px; text-align:center;">
+                        <i class="<?php echo htmlspecialchars($item['icon']); ?>" style="font-size:20px; color:#0B1E3F;"></i>
+                        <h6 style="margin:8px 0 0;"><?php echo htmlspecialchars($item['title']); ?></h6>
+                        <small style="color:#797979;"><?php echo htmlspecialchars($item['subtitle']); ?></small>
+                        <small style="color:#0B1E3F; font-weight:600; margin-top:4px;"><?php echo htmlspecialchars($item['content']); ?></small>
+                        <small style="color:#4c8bf5; margin-top:2px; word-break:break-all;">
+                            <i class="fa-solid fa-arrow-up-right-from-square me-1"></i><?php echo htmlspecialchars($item['link'] ?: 'No link set'); ?>
+                        </small>
+                        <div class="d-flex justify-content-center gap-2 mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                data-bs-toggle="modal" data-bs-target="#editItemModal"
+                                data-id="<?php echo (int) $item['id']; ?>"
+                                data-icon="<?php echo htmlspecialchars($item['icon']); ?>"
+                                data-title="<?php echo htmlspecialchars($item['title']); ?>"
+                                data-subtitle="<?php echo htmlspecialchars($item['subtitle']); ?>"
+                                data-content="<?php echo htmlspecialchars($item['content']); ?>"
+                                data-link="<?php echo htmlspecialchars($item['link'] ?? ''); ?>">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <a href="home-sections.php?delete_item=<?php echo (int) $item['id']; ?>"
+                               class="btn btn-sm delete-btn" style="background:#fdeaea; color:#c0392b; border:none;"
+                               onclick="return confirm('Delete this card?');">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <!-- Shared list of internal sections/pages a card can link to -->
+    <datalist id="quicklinkTargets">
+        <option value="index.php?page=home#faq-section">FAQ Section (Homepage)</option>
+        <option value="index.php?page=home#brands-section">Get Quote / Pricing Tool (Homepage)</option>
+        <option value="index.php?page=home#about-con">Service Areas / Map (Homepage)</option>
+        <option value="index.php?page=contact">Contact Us Page</option>
+        <option value="index.php?page=about">About Us Page</option>
+        <option value="index.php?page=blogs">Blog Page</option>
+    </datalist>
+
+    <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:14px;">
+                <form method="POST" action="home-sections.php?section=quicklink">
+                    <input type="hidden" name="section_id" value="<?php echo (int) $active_section['id']; ?>">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5"><i class="fa-solid fa-plus me-2"></i>Add quick link card</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Icon (Font Awesome class)</label>
+                                <input type="text" name="icon" class="form-control" placeholder="e.g. fas fa-question-circle" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="e.g. FAQ" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Description</label>
+                                <textarea name="subtitle" class="form-control" rows="2" placeholder="e.g. Find answers to common questions..."></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">CTA label</label>
+                                <input type="text" name="content" class="form-control" placeholder="e.g. View FAQ">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Link (which section/page this card opens)</label>
+                                <input type="text" name="link" class="form-control" list="quicklinkTargets" placeholder="Pick a suggestion or type a custom URL">
+                                <small style="color:#797979;">Pick from the list to join this card to another section, or type any URL.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="add_item" class="btn" style="background:#0B1E3F; color:#fff;">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editItemModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:14px;">
+                <form method="POST" action="home-sections.php?section=quicklink">
+                    <input type="hidden" name="item_id" id="editItemId" value="">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5"><i class="fa-solid fa-pen me-2"></i>Edit quick link card</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Icon (Font Awesome class)</label>
+                                <input type="text" name="icon" id="editItemIcon" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Title</label>
+                                <input type="text" name="title" id="editItemTitle" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Description</label>
+                                <textarea name="subtitle" id="editItemSubtitle" class="form-control" rows="2"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">CTA label</label>
+                                <input type="text" name="content" id="editItemContent" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Link (which section/page this card opens)</label>
+                                <input type="text" name="link" id="editItemLink" class="form-control" list="quicklinkTargets">
+                                <small style="color:#797979;">Pick from the list to join this card to another section, or type any URL.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="edit_item" class="btn" style="background:#0B1E3F; color:#fff;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var editModal = document.getElementById('editItemModal');
+            editModal.addEventListener('show.bs.modal', function (event) {
+                var btn = event.relatedTarget;
+                document.getElementById('editItemId').value = btn.getAttribute('data-id');
+                document.getElementById('editItemIcon').value = btn.getAttribute('data-icon');
+                document.getElementById('editItemTitle').value = btn.getAttribute('data-title');
+                document.getElementById('editItemSubtitle').value = btn.getAttribute('data-subtitle');
+                document.getElementById('editItemContent').value = btn.getAttribute('data-content');
+                document.getElementById('editItemLink').value = btn.getAttribute('data-link');
+            });
+        });
+    </script>
+    <?php elseif ($active_key === 'guide' && $active_section): ?>
+
+    <div class="card" style="border-radius:14px; padding:24px;">
+        <h5 style="margin-bottom:16px;"><i class="fa-solid fa-book-open me-2"></i>Guide / Info Block — Section Content</h5>
+
+        <form method="POST" action="home-sections.php?section=guide">
+            <input type="hidden" name="section_id" value="<?php echo (int) $active_section['id']; ?>">
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Kicker (small line above heading)</label>
+                    <input type="text" name="kicker" class="form-control" value="<?php echo htmlspecialchars($active_section['kicker']); ?>">
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Heading</label>
+                    <input type="text" name="heading" class="form-control" value="<?php echo htmlspecialchars($active_section['heading']); ?>">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">
+                        Content &mdash; separate paragraphs with a blank line. The first ~4-5 lines show on the site, the rest appears behind "Read More".
+                    </label>
+                    <textarea name="description" class="form-control" rows="16"><?php echo htmlspecialchars($active_section['description']); ?></textarea>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" name="update_section" class="btn" style="background:#0B1E3F; color:#fff;">Save Section Content</button>
+            </div>
+        </form>
+    </div>
+
 <?php elseif ($active_key === 'about_con' && $active_section): ?>
 
     <div class="card" style="border-radius:14px; padding:24px; margin-bottom:24px;">

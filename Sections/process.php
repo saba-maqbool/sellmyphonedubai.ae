@@ -43,10 +43,10 @@ if ($process_row = mysqli_fetch_assoc($process_result)) {
                     <div class="pro-icon">
                         <span><i class="<?php echo htmlspecialchars($item['icon']); ?>"></i></span>
                     </div>
-                    <h3 style="color:#E8C97A; margin-top:5px;margin-bottom:15px";>
+                    <h3 style="color:#E8C97A; margin-top:8px;margin-bottom:20px;font-size:25px; font-weight:700;";>
                         <?php echo htmlspecialchars($item['title']); ?>
                     </h3>
-                    <p style="color:rgba(254, 254, 254, 0.91);"><?php echo htmlspecialchars($item['subtitle']); ?></p>
+                    <p style="color:rgba(254, 254, 254, 0.91); font-size=18px;"><?php echo htmlspecialchars($item['subtitle']); ?></p>
                 </div>
             </div>
             <?php endforeach; ?>
