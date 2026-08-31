@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_section'])) {
     $description = trim($_POST['description'] ?? '');
     $extra_1 = trim($_POST['extra_1'] ?? '');
     $extra_2 = trim($_POST['extra_2'] ?? '');
+    $image_alt = trim($_POST['image_alt'] ?? '');
 
     $image_sql = "";
     $image_path = null;
@@ -45,11 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_section'])) {
 
     if ($error_msg === "") {
         if ($image_path) {
-            $stmt = mysqli_prepare($conn, "UPDATE home_sections SET kicker=?, heading=?, heading_highlight=?, description=?, extra_1=?, extra_2=?, image=? WHERE id=?");
-            mysqli_stmt_bind_param($stmt, "sssssssi", $kicker, $heading, $heading_highlight, $description, $extra_1, $extra_2, $image_path, $id);
+            $stmt = mysqli_prepare($conn, "UPDATE home_sections SET kicker=?, heading=?, heading_highlight=?, description=?, extra_1=?, extra_2=?, image=?, image_alt=? WHERE id=?");
+            mysqli_stmt_bind_param($stmt, "ssssssssi", $kicker, $heading, $heading_highlight, $description, $extra_1, $extra_2, $image_path, $image_alt, $id);
         } else {
-            $stmt = mysqli_prepare($conn, "UPDATE home_sections SET kicker=?, heading=?, heading_highlight=?, description=?, extra_1=?, extra_2=? WHERE id=?");
-            mysqli_stmt_bind_param($stmt, "ssssssi", $kicker, $heading, $heading_highlight, $description, $extra_1, $extra_2, $id);
+            $stmt = mysqli_prepare($conn, "UPDATE home_sections SET kicker=?, heading=?, heading_highlight=?, description=?, extra_1=?, extra_2=?, image_alt=? WHERE id=?");
+            mysqli_stmt_bind_param($stmt, "sssssssi", $kicker, $heading, $heading_highlight, $description, $extra_1, $extra_2, $image_alt, $id);
         }
 
         if (mysqli_stmt_execute($stmt)) {
@@ -67,6 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_item'])) {
     $title = trim($_POST['title'] ?? '');
     $subtitle = trim($_POST['subtitle'] ?? '');
     $image_path = null;
+    $image_alt = trim($_POST['image_alt'] ?? '');
+    $icon_alt = trim($_POST['icon_alt'] ?? '');
 
     // Card image (used by Brand cards, not needed for hero feature boxes)
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -95,8 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_item'])) {
     $order_result = mysqli_query($conn, "SELECT COALESCE(MAX(sort_order),0)+1 AS next_order FROM home_section_items WHERE section_id = " . $section_id);
     $next_order = mysqli_fetch_assoc($order_result)['next_order'];
 
-    $stmt = mysqli_prepare($conn, "INSERT INTO home_section_items (section_id, icon, image, title, subtitle, content, link, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    mysqli_stmt_bind_param($stmt, "issssssi", $section_id, $icon, $image_path, $title, $subtitle, $content, $link, $next_order);
+    $stmt = mysqli_prepare($conn, "INSERT INTO home_section_items (section_id, icon, icon_alt, image, image_alt, title, subtitle, content, link, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "issssssssi", $section_id, $icon, $icon_alt, $image_path, $image_alt, $title, $subtitle, $content, $link, $next_order);
     if (mysqli_stmt_execute($stmt)) {
         $success_msg = "Item added successfully.";
     } else {
@@ -111,6 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_item'])) {
     $title = trim($_POST['title'] ?? '');
     $subtitle = trim($_POST['subtitle'] ?? '');
     $image_path = null;
+    $image_alt = trim($_POST['image_alt'] ?? '');
+    $icon_alt = trim($_POST['icon_alt'] ?? '');
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
@@ -135,11 +140,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_item'])) {
        $link = trim($_POST['link'] ?? '');
 
     if ($image_path) {
-        $stmt = mysqli_prepare($conn, "UPDATE home_section_items SET icon=?, image=?, title=?, subtitle=?, content=?, link=? WHERE id=?");
-        mysqli_stmt_bind_param($stmt, "ssssssi", $icon, $image_path, $title, $subtitle, $content, $link, $item_id);
+        $stmt = mysqli_prepare($conn, "UPDATE home_section_items SET icon=?, icon_alt=?, image=?, image_alt=?, title=?, subtitle=?, content=?, link=? WHERE id=?");
+        mysqli_stmt_bind_param($stmt, "ssssssssi", $icon, $icon_alt, $image_path, $image_alt, $title, $subtitle, $content, $link, $item_id);
     } else {
-        $stmt = mysqli_prepare($conn, "UPDATE home_section_items SET icon=?, title=?, subtitle=?, content=?, link=? WHERE id=?");
-        mysqli_stmt_bind_param($stmt, "sssssi", $icon, $title, $subtitle, $content, $link, $item_id);
+        $stmt = mysqli_prepare($conn, "UPDATE home_section_items SET icon=?, icon_alt=?, image_alt=?, title=?, subtitle=?, content=?, link=? WHERE id=?");
+        mysqli_stmt_bind_param($stmt, "sssssssi", $icon, $icon_alt, $image_alt, $title, $subtitle, $content, $link, $item_id);
     }
     if (mysqli_stmt_execute($stmt)) {
         $success_msg = "Item updated successfully.";
@@ -276,10 +281,14 @@ if ($active_section) {
                         <label class="form-label" style="font-size:12.5px; color:#797979c5;">Hero image (leave empty to keep current)</label>
                         <input type="file" name="image" class="form-control" accept="image/*">
                     </div>
+                    <div class="col-md-8">
+                        <label class="form-label" style="font-size:12.5px; color:#797979c5;">Hero image alt text (describes the image for accessibility &amp; SEO)</label>
+                        <input type="text" name="image_alt" class="form-control" placeholder="e.g. Sell your iPhone in Dubai" value="<?php echo htmlspecialchars($active_section['image_alt'] ?? ''); ?>">
+                    </div>
                 </div>
 
                 <?php if (!empty($active_section['image'])): ?>
-                    <img src="../<?php echo htmlspecialchars($active_section['image']); ?>" alt="Current hero image" style="max-height:80px; margin-top:14px; border-radius:8px;">
+                    <img src="../<?php echo htmlspecialchars($active_section['image']); ?>" alt="<?php echo htmlspecialchars($active_section['image_alt'] ?: 'Current hero image'); ?>" style="max-height:80px; margin-top:14px; border-radius:8px;">
                 <?php endif; ?>
 
                 <div class="mt-4">
@@ -457,10 +466,10 @@ if ($active_section) {
                     <div class="col">
                         <div class="card h-100" style="border-radius:12px; padding:14px; text-align:center;">
                             <?php if (!empty($item['image'])): ?>
-                                <img src="../<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" style="height:90px; object-fit:contain; margin:0 auto;">
+                                <img src="../<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['image_alt'] ?: $item['title']); ?>" style="height:90px; object-fit:contain; margin:0 auto;">
                             <?php endif; ?>
                             <?php if (!empty($item['icon'])): ?>
-                                <img src="../<?php echo htmlspecialchars($item['icon']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?> icon" style="height:28px; object-fit:contain; margin:8px auto 0;">
+                                <img src="../<?php echo htmlspecialchars($item['icon']); ?>" alt="<?php echo htmlspecialchars($item['icon_alt'] ?: ($item['title'] . ' icon')); ?>" style="height:28px; object-fit:contain; margin:8px auto 0;">
                             <?php endif; ?>
                             <h6 style="margin:8px 0 0;"><?php echo htmlspecialchars($item['title']); ?></h6>
                             <small style="color:#797979;"><?php echo htmlspecialchars($item['subtitle']); ?></small>
@@ -470,7 +479,9 @@ if ($active_section) {
                                     data-id="<?php echo (int) $item['id']; ?>"
                                     data-icon="<?php echo htmlspecialchars($item['icon']); ?>"
                                     data-title="<?php echo htmlspecialchars($item['title']); ?>"
-                                    data-subtitle="<?php echo htmlspecialchars($item['subtitle']); ?>">
+                                    data-subtitle="<?php echo htmlspecialchars($item['subtitle']); ?>"
+                                    data-image-alt="<?php echo htmlspecialchars($item['image_alt'] ?? ''); ?>"
+                                    data-icon-alt="<?php echo htmlspecialchars($item['icon_alt'] ?? ''); ?>">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                                 <a href="home-sections.php?delete_item=<?php echo (int) $item['id']; ?>"
@@ -510,8 +521,16 @@ if ($active_section) {
                                     <input type="file" name="image" class="form-control" accept="image/*">
                                 </div>
                                 <div class="col-12">
+                                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Card image alt text</label>
+                                    <input type="text" name="image_alt" class="form-control" placeholder="e.g. Apple iPhone devices">
+                                </div>
+                                <div class="col-12">
                                     <label class="form-label" style="font-size:12.5px; color:#797979c5;">Small brand icon</label>
                                     <input type="file" name="icon_image" class="form-control" accept="image/*">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Brand icon alt text</label>
+                                    <input type="text" name="icon_alt" class="form-control" placeholder="e.g. Apple logo">
                                 </div>
                             </div>
                         </div>
@@ -550,8 +569,16 @@ if ($active_section) {
                                     <input type="file" name="image" class="form-control" accept="image/*">
                                 </div>
                                 <div class="col-12">
+                                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Card image alt text</label>
+                                    <input type="text" name="image_alt" id="editItemImageAlt" class="form-control" placeholder="e.g. Apple iPhone devices">
+                                </div>
+                                <div class="col-12">
                                     <label class="form-label" style="font-size:12.5px; color:#797979c5;">Small brand icon (leave empty to keep current)</label>
                                     <input type="file" name="icon_image" class="form-control" accept="image/*">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Brand icon alt text</label>
+                                    <input type="text" name="icon_alt" id="editItemIconAlt" class="form-control" placeholder="e.g. Apple logo">
                                 </div>
                             </div>
                         </div>
@@ -573,6 +600,8 @@ if ($active_section) {
                     document.getElementById('editItemIcon').value = btn.getAttribute('data-icon');
                     document.getElementById('editItemTitle').value = btn.getAttribute('data-title');
                     document.getElementById('editItemSubtitle').value = btn.getAttribute('data-subtitle');
+                    document.getElementById('editItemImageAlt').value = btn.getAttribute('data-image-alt');
+                    document.getElementById('editItemIconAlt').value = btn.getAttribute('data-icon-alt');
                 });
             });
         </script>
@@ -762,10 +791,14 @@ if ($active_section) {
                     <label class="form-label" style="font-size:12.5px; color:#797979c5;">Visual image (leave empty to keep current)</label>
                     <input type="file" name="image" class="form-control" accept="image/*">
                 </div>
+                <div class="col-md-8">
+                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Visual image alt text</label>
+                    <input type="text" name="image_alt" class="form-control" placeholder="e.g. Phones being handed over" value="<?php echo htmlspecialchars($active_section['image_alt'] ?? ''); ?>">
+                </div>
             </div>
 
             <?php if (!empty($active_section['image'])): ?>
-                <img src="../<?php echo htmlspecialchars($active_section['image']); ?>" alt="Current visual image" style="max-height:80px; margin-top:14px; border-radius:8px;">
+                <img src="../<?php echo htmlspecialchars($active_section['image']); ?>" alt="<?php echo htmlspecialchars($active_section['image_alt'] ?: 'Current visual image'); ?>" style="max-height:80px; margin-top:14px; border-radius:8px;">
             <?php endif; ?>
 
             <div class="mt-4">
@@ -1445,10 +1478,14 @@ if ($active_section) {
                     <label class="form-label" style="font-size:12.5px; color:#797979c5;">Final CTA bar image (leave empty to keep current)</label>
                     <input type="file" name="image" class="form-control" accept="image/*">
                 </div>
+                <div class="col-md-8">
+                    <label class="form-label" style="font-size:12.5px; color:#797979c5;">Final CTA bar image alt text</label>
+                    <input type="text" name="image_alt" class="form-control" placeholder="e.g. Sell your phone" value="<?php echo htmlspecialchars($active_section['image_alt'] ?? ''); ?>">
+                </div>
             </div>
 
             <?php if (!empty($active_section['image'])): ?>
-                <img src="../<?php echo htmlspecialchars($active_section['image']); ?>" alt="Current CTA image" style="max-height:80px; margin-top:14px; border-radius:8px;">
+                <img src="../<?php echo htmlspecialchars($active_section['image']); ?>" alt="<?php echo htmlspecialchars($active_section['image_alt'] ?: 'Current CTA image'); ?>" style="max-height:80px; margin-top:14px; border-radius:8px;">
             <?php endif; ?>
 
             <div class="mt-4">

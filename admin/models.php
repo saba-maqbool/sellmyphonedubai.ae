@@ -10,6 +10,7 @@ $allowed_ext = ["jpg", "jpeg", "png", "webp"];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_model'])) {
     $brand = trim($_POST['brand']);
     $model_name = trim($_POST['model_name']);
+    $image_alt = trim($_POST['image_alt'] ?? '');
 
     if ($brand === '' || $model_name === '') {
         $error_msg = "Brand and model name are required.";
@@ -28,14 +29,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_model'])) {
                 $error_msg = "Could not upload the image. Check that admin/../imgs/ is writable.";
             } else {
                 $image_path = "imgs/" . $filename;
-                $stmt = mysqli_prepare($conn, "INSERT INTO models (brand, model_name, image) VALUES (?, ?, ?)");
-                mysqli_stmt_bind_param($stmt, "sss", $brand, $model_name, $image_path);
+                $stmt = mysqli_prepare($conn, "INSERT INTO models (brand, model_name, image, image_alt) VALUES (?, ?, ?, ?)");
+                mysqli_stmt_bind_param($stmt, "ssss", $brand, $model_name, $image_path, $image_alt);
 
                 if (mysqli_stmt_execute($stmt)) {
                     $success_msg = "Model '$model_name' added successfully.";
                 } else {
                     $error_msg = "Could not add model: " . mysqli_error($conn);
                 }
+            }
+        }
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_model'])) {
+    $id = (int) $_POST['model_id'];
+    $brand = trim($_POST['brand']);
+    $model_name = trim($_POST['model_name']);
+    $image_alt = trim($_POST['image_alt'] ?? '');
+
+    if ($brand === '' || $model_name === '') {
+        $error_msg = "Brand and model name are required.";
+    } else {
+        $image_path = null;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, $allowed_ext)) {
+                $error_msg = "Only jpg, jpeg, png, webp images are allowed.";
+            } else {
+                $filename = uniqid('model_') . '.' . $ext;
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $filename)) {
+                    $image_path = "imgs/" . $filename;
+                }
+            }
+        }
+
+        if ($error_msg === "") {
+            if ($image_path) {
+                // Remove the old image file now that a new one has replaced it
+                $old = mysqli_prepare($conn, "SELECT image FROM models WHERE id = ?");
+                mysqli_stmt_bind_param($old, "i", $id);
+                mysqli_stmt_execute($old);
+                $old_row = mysqli_fetch_assoc(mysqli_stmt_get_result($old));
+                if ($old_row && $old_row['image'] && file_exists(__DIR__ . "/../" . $old_row['image'])) {
+                    unlink(__DIR__ . "/../" . $old_row['image']);
+                }
+
+                $stmt = mysqli_prepare($conn, "UPDATE models SET brand=?, model_name=?, image=?, image_alt=? WHERE id=?");
+                mysqli_stmt_bind_param($stmt, "ssssi", $brand, $model_name, $image_path, $image_alt, $id);
+            } else {
+                $stmt = mysqli_prepare($conn, "UPDATE models SET brand=?, model_name=?, image_alt=? WHERE id=?");
+                mysqli_stmt_bind_param($stmt, "sssi", $brand, $model_name, $image_alt, $id);
+            }
+
+            if (mysqli_stmt_execute($stmt)) {
+                $success_msg = "Model '$model_name' updated successfully.";
+            } else {
+                $error_msg = "Could not update model: " . mysqli_error($conn);
             }
         }
     }
@@ -154,6 +203,10 @@ if ($models_result) {
                                 <label class="form-label" style="font-size:12.5px; color:#797979c5;">Image</label>
                                 <input type="file" name="image" class="form-control" accept="image/*" required>
                             </div>
+                            <div class="col-md-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Image alt text (leave empty to use model name)</label>
+                                <input type="text" name="image_alt" class="form-control" placeholder="e.g. iPhone 15 Pro in Natural Titanium">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -165,6 +218,54 @@ if ($models_result) {
             </div>
         </div>
     </div>
+    <!-- Edit Model Modal -->
+<div class="modal fade" id="editModelModal" tabindex="-1" aria-labelledby="editModelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="border-radius:14px;">
+            <form method="POST" action="models.php" enctype="multipart/form-data">
+                <input type="hidden" name="model_id" id="editModelId" value="">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModelModalLabel">
+                        <i class="fa-solid fa-pen me-2"></i>Edit model
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" style="font-size:12.5px; color:#797979c5;">Brand</label>
+                            <select name="brand" id="editModelBrand" class="form-select-brand form-select-app" required>
+                                <option value="Apple">Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="oneplus">One Plus</option>
+                                <option value="pixel">Google Pixel</option>
+                            
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" style="font-size:12.5px; color:#797979c5;">Model name</label>
+                            <input type="text" name="model_name" id="editModelName" class="form-control"
+                                placeholder="e.g. iPhone 15 Pro" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" style="font-size:12.5px; color:#797979c5;">Image (leave empty to keep current)</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" style="font-size:12.5px; color:#797979c5;">Image alt text (leave empty to use model name)</label>
+                            <input type="text" name="image_alt" id="editModelImageAlt" class="form-control" placeholder="e.g. iPhone 15 Pro in Natural Titanium">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="edit_model" class="btn"
+                        style="background:#0B1E3F; color:#fff;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <style>
         #modelsGrid .col {
@@ -205,16 +306,26 @@ if ($models_result) {
                     <div class="card h-60">
                         <div></div>
                         <img src="../<?php echo htmlspecialchars($m['image']); ?>" 
-                        class="card-img-top" alt="<?php echo htmlspecialchars($m['model_name']); ?>">
+                        class="card-img-top" alt="<?php echo htmlspecialchars($m['image_alt'] ?: $m['model_name']); ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($m['model_name']); ?></h5>
                             <p class="card-text"><?php echo htmlspecialchars($m['brand']); ?></p>
-                            <a href="models.php?delete=<?php echo (int) $m['id']; ?>"
-                               class="btn btn-sm delete-btn"
-                               style="background:#fdeaea; color:#c0392b; border:none;"
-                               onclick="return confirm('Delete this model? Its pricing will also be removed.');">
-                               <i class="fa-solid fa-trash"></i> Delete
-                            </a>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="modal" data-bs-target="#editModelModal"
+                                    data-id="<?php echo (int) $m['id']; ?>"
+                                    data-brand="<?php echo htmlspecialchars($m['brand']); ?>"
+                                    data-model-name="<?php echo htmlspecialchars($m['model_name']); ?>"
+                                    data-image-alt="<?php echo htmlspecialchars($m['image_alt'] ?? ''); ?>">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </button>
+                                <a href="models.php?delete=<?php echo (int) $m['id']; ?>"
+                                class="btn btn-sm delete-btn"
+                                style="background:#fdeaea; color:#c0392b; border:none;"
+                                onclick="return confirm('Delete this model? Its pricing will also be removed.');">
+                                <i class="fa-solid fa-trash"></i> Delete
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -243,6 +354,16 @@ if ($models_result) {
                 noResults.style.display = (visibleCount === 0) ? '' : 'none';
             });
         });
+        document.addEventListener('DOMContentLoaded', function () {
+    var editModal = document.getElementById('editModelModal');
+    editModal.addEventListener('show.bs.modal', function (event) {
+        var btn = event.relatedTarget;
+        document.getElementById('editModelId').value = btn.getAttribute('data-id');
+        document.getElementById('editModelBrand').value = btn.getAttribute('data-brand');
+        document.getElementById('editModelName').value = btn.getAttribute('data-model-name');
+        document.getElementById('editModelImageAlt').value = btn.getAttribute('data-image-alt');
+    });
+});
     </script>
 
 </div>

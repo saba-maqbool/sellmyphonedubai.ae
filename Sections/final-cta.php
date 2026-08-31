@@ -2,7 +2,7 @@
     <div class="final-cta-bar">
 
         <div class="final-cta-img-wrap">
-            <img src="<?php echo htmlspecialchars($about_section['image']); ?>" alt="Sell your phone" class="final-cta-img">
+            <img src="<?php echo htmlspecialchars($about_section['image']); ?>" alt="<?php echo htmlspecialchars($about_section['image_alt'] ?? 'Sell your phone'); ?>" class="final-cta-img">
         </div>
 
         <div class="final-cta-text">

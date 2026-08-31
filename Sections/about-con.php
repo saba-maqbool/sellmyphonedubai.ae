@@ -1,4 +1,3 @@
-
 <?php
 require_once(__DIR__ . "/../admin/include/db-connect.php");
 
@@ -8,6 +7,7 @@ $about_section = [
     'heading_highlight' => 'Most Trusted Buyer?',
     'description' => 'Your phone loses value every day. Get the best cash price in Dubai now with our fast, safe, and easy service. We offer free pickup and instant payment right at your doorstep.',
     'image' => 'imgs/hero.webp',
+    'image_alt' => 'Sell your phone',
     'extra_1' => 'Ready to Sell Your Phone?',
     'extra_2' => 'Get an instant quote now and sell your phone in minutes.',
 ];
@@ -17,7 +17,7 @@ $stmt = mysqli_prepare($conn, "SELECT * FROM home_sections WHERE section_key = '
 mysqli_stmt_execute($stmt);
 $about_result = mysqli_stmt_get_result($stmt);
 if ($about_row = mysqli_fetch_assoc($about_result)) {
-    foreach (['kicker', 'heading', 'heading_highlight', 'description', 'image', 'extra_1', 'extra_2'] as $field) {
+    foreach (['kicker', 'heading', 'heading_highlight', 'description', 'image', 'image_alt', 'extra_1', 'extra_2'] as $field) {
         if (!empty($about_row[$field])) {
             $about_section[$field] = $about_row[$field];
         }
@@ -71,4 +71,3 @@ if ($about_row = mysqli_fetch_assoc($about_result)) {
 
     </div>
 </section>
-

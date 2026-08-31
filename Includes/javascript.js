@@ -304,6 +304,9 @@ function goBack() {
     var brands = document.getElementById("brands-section");
     var apple = document.getElementById("apple-section");
     var samsung = document.getElementById("samsung-section");
+    if (!brands) {
+        return;
+    }
 
     apple.classList.remove("fade-in");
     samsung.classList.remove("fade-in");

@@ -24,13 +24,17 @@ switch ($page) {
     case 'about':
         include 'about.php';
         break;
+    
+    case 'apple':
+        include 'apple-page.php';
+        break;
 
-    case 'blogs':
-        include 'blogs.php';
+    case 'blog':
+        include 'blog.php';
         break;
 
     case 'blog-details':
-        include 'Sections/blog-details.php';
+        include 'blog-details.php';
         break;
 
     case 'testimonials':

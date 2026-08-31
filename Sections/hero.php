@@ -7,6 +7,7 @@ $hero = [
     'heading_highlight' => 'in Dubai',
     'description' => 'Get the best price for your used iPhone, Samsung and more. Quick, secure &amp; trusted.',
     'image' => 'imgs/heroo.png',
+    'image_alt' => 'Sell your iPhone in Dubai',
     'extra_1' => '4.9/5',
     'extra_2' => 'Based on 2,500+ reviews',
 ];
@@ -16,7 +17,7 @@ $stmt = mysqli_prepare($conn, "SELECT * FROM home_sections WHERE section_key = '
 mysqli_stmt_execute($stmt);
 $hero_result = mysqli_stmt_get_result($stmt);
 if ($hero_row = mysqli_fetch_assoc($hero_result)) {
-    foreach (['kicker', 'heading', 'heading_highlight', 'description', 'image', 'extra_1', 'extra_2'] as $field) {
+    foreach (['kicker', 'heading', 'heading_highlight', 'description', 'image', 'image_alt', 'extra_1', 'extra_2'] as $field) {
         if (!empty($hero_row[$field])) {
             $hero[$field] = $hero_row[$field];
         }
@@ -63,7 +64,7 @@ if ($hero_row = mysqli_fetch_assoc($hero_result)) {
 
   
   <div class="hero-phone-visual">
-    <img src="<?php echo htmlspecialchars($hero['image']); ?>" alt="Sell your iPhone in Dubai" class="hero-phone-img">
+    <img src="<?php echo htmlspecialchars($hero['image']); ?>" alt="<?php echo htmlspecialchars($hero['image_alt']); ?>" class="hero-phone-img">
   </div>
 
   <div class="hero-quote-card">

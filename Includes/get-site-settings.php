@@ -7,7 +7,9 @@ if (!isset($conn)) {
 $site_settings = [
     'site_title'             => 'SellMyPhoneDubai',
     'logo'                   => 'imgs/new-logo.webp',
+    'logo_alt'               => 'SellMyPhoneDubai',
     'favicon'                => 'imgs/new-logo.webp',
+    'favicon_alt'            => 'SellMyPhoneDubai',
     'nav_home_label'         => 'Home',
     'nav_about_label'        => 'About',
     'nav_quote_label'        => 'Get Instant Quote',

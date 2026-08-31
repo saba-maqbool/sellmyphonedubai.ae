@@ -1,5 +1,4 @@
 RewriteEngine On
-RewriteBase /sellmyphonedubai/
 
 # index => home
 RewriteRule ^index/?$ index.php?page=home [L,QSA]
@@ -17,4 +16,3 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([^/]+)/?$ index.php?page=$1 [L,QSA]
 RewriteEngine On
-RewriteBase /sellmyphonedubai/

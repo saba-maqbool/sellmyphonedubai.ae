@@ -47,13 +47,13 @@ require_once(__DIR__ . "/get-site-settings.php");
                         <span class="footer-contact-icon"><i class="fas fa-phone-alt"></i></span>
                         <span><?php echo htmlspecialchars($site_settings['footer_phone']); ?></span>
                     </div>
-                    <div class="footer-contact-item">
+                     <div class="footer-contact-item">
                         <span class="footer-contact-icon"><i class="fab fa-whatsapp"></i></span>
-                        <span><?php echo htmlspecialchars($site_settings['footer_whatsapp']); ?></span>
+                        <a class="footer-contact-link" href="https://wa.me/<?php echo preg_replace('/\D/', '', $site_settings['footer_whatsapp']); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars($site_settings['footer_whatsapp']); ?></a>
                     </div>
                     <div class="footer-contact-item">
                         <span class="footer-contact-icon"><i class="fas fa-envelope"></i></span>
-                        <span><?php echo htmlspecialchars($site_settings['footer_email']); ?></span>
+                        <a class="footer-contact-link" href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($site_settings['footer_email']); ?>" target="_blank" rel="noopener"><?php echo htmlspecialchars($site_settings['footer_email']); ?></a>
                     </div>
                     <div class="footer-contact-item footer-contact-item-last">
                         <span class="footer-contact-icon"><i class="fas fa-map-marker-alt"></i></span>

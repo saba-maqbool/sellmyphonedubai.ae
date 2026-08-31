@@ -35,7 +35,7 @@
             data-model-id="<?php echo (int) $m['id']; ?>"
             data-model-name="<?php echo htmlspecialchars($m['model_name']); ?>">
             <span class="model-card-img-wrap">
-                <img src="<?php echo htmlspecialchars($m['image']); ?>" class="model-card-img" alt="<?php echo htmlspecialchars($m['model_name']); ?>" loading="lazy">
+                <img src="<?php echo htmlspecialchars($m['image']); ?>" class="model-card-img" alt="<?php echo htmlspecialchars($m['image_alt'] ?: $m['model_name']); ?>" loading="lazy">
             </span>
             <span class="model-card-title"><?php echo htmlspecialchars($m['model_name']); ?></span>
         </button>

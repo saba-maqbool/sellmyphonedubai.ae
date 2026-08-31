@@ -7,7 +7,7 @@ require_once(__DIR__ . "/get-site-settings.php");
   <div class="container-fluid">
 
     <a href="./">
-      <img class="navbar-img" src="<?php echo htmlspecialchars($site_settings['logo']); ?>?v=<?= file_exists(__DIR__ . '/../' . $site_settings['logo']) ? filemtime(__DIR__ . '/../' . $site_settings['logo']) : time(); ?>" alt="<?php echo htmlspecialchars($site_settings['site_title']); ?>">
+      <img class="navbar-img" src="<?php echo htmlspecialchars($site_settings['logo']); ?>?v=<?= file_exists(__DIR__ . '/../' . $site_settings['logo']) ? filemtime(__DIR__ . '/../' . $site_settings['logo']) : time(); ?>" alt="<?php echo htmlspecialchars($site_settings['logo_alt'] ?: $site_settings['site_title']); ?>">
     </a>
 
     <button class="navbar-toggler" type="button"
@@ -37,8 +37,16 @@ require_once(__DIR__ . "/get-site-settings.php");
             href="about">
             <?php echo htmlspecialchars($site_settings['nav_about_label']); ?>
           </a>
+
         </li>
 
+                <li class="nav-item">
+          <a class="nav-link <?= ($current_page == 'apple') ? 'active' : ''; ?>"
+            href="apple">
+            Apple
+          </a>
+        </li>
+        
         <li class="nav-item">
           <a class="nav-link <?= ($current_page == 'testimonials') ? 'active' : ''; ?>"
             href="./#valuation-step">
@@ -48,7 +56,7 @@ require_once(__DIR__ . "/get-site-settings.php");
 
         <li class="nav-item">
           <a class="nav-link <?= ($current_page == 'blogs') ? 'active' : ''; ?>"
-            href="blogs">
+            href="blog">
             <?php echo htmlspecialchars($site_settings['nav_blogs_label']); ?>
           </a>
         </li>

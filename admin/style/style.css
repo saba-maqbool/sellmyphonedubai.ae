@@ -112,12 +112,23 @@
 .sidebar {
     position: fixed;
     width: 250px;
-    height: 600px;
+    height: 100vh;
     background-color: #0B1E3F;
     padding: 1.75rem 1.25rem;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar{
+    width: 6px;
+}
+.sidebar::-webkit-scrollbar-track{
+    background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb{
+    background-color: rgba(255,255,255,0.18);
+    border-radius: 10px;
 }
 
 .sidebar-brand {
@@ -172,9 +183,72 @@
     background-color: rgba(255, 255, 255, 0.14);
     color: #fff;
 }
+/* ===== Collapsible sidebar group (e.g. Brands) — hardened version ===== */
+.sidebar-group-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.sidebar-group-toggle:focus,
+.sidebar-group-toggle:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+.sidebar-group-toggle i:first-child {
+    font-size: 17px;
+}
+.sidebar-group-toggle span {
+    flex: 1;
+    text-align: left;
+}
+.sidebar-group-toggle:hover,
+.sidebar-group-toggle.active {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #fff;
+}
+.sidebar-group-caret {
+    font-size: 11px !important;
+    transition: transform 0.2s ease;
+}
+.sidebar-group.open .sidebar-group-caret {
+    transform: rotate(180deg);
+}
+.sidebar-subnav,
+.sidebar-subnav li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.sidebar-subnav {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+}
+.sidebar-group.open .sidebar-subnav {
+    max-height: 300px;
+}
+.sidebar-subnav li a {
+    padding-left: 38px !important;
+    font-size: 11.5px;
+}
+.sidebar-subnav li a i {
+    font-size: 14px !important;
+}
 
 .sidebar-logout {
-    margin-top: auto;
+    margin-top: 1.5rem;
     display: flex;
     align-items: center;
     gap: 12px;

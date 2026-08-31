@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_blog'])) {
     $meta_description = trim($_POST['meta_description'] ?? '');
     $meta_keywords = trim($_POST['meta_keywords'] ?? '');
     $meta_robots = trim($_POST['meta_robots'] ?? '');
+    $image_alt = trim($_POST['image_alt'] ?? '');
 
     if ($title === '' || $content === '') {
         $error_msg = "Title and content are required.";
@@ -41,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_blog'])) {
             }
         }
 
-        $stmt = mysqli_prepare($conn, "INSERT INTO blogs (title, slug, excerpt, content, image, category, author, status, meta_title, meta_description, meta_keywords, meta_robots) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "ssssssssssss", $title, $slug, $excerpt, $content, $image_path, $category, $author, $status, $meta_title, $meta_description, $meta_keywords, $meta_robots);
+        $stmt = mysqli_prepare($conn, "INSERT INTO blogs (title, slug, excerpt, content, image, image_alt, category, author, status, meta_title, meta_description, meta_keywords, meta_robots) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "sssssssssssss", $title, $slug, $excerpt, $content, $image_path, $image_alt, $category, $author, $status, $meta_title, $meta_description, $meta_keywords, $meta_robots);
 
         if (mysqli_stmt_execute($stmt)) {
             $success_msg = "Blog post added successfully.";
@@ -64,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_blog'])) {
     $meta_description = trim($_POST['meta_description'] ?? '');
     $meta_keywords = trim($_POST['meta_keywords'] ?? '');
     $meta_robots = trim($_POST['meta_robots'] ?? '');
+    $image_alt = trim($_POST['image_alt'] ?? '');
 
     $image_path = null;
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -77,11 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_blog'])) {
     }
 
     if ($image_path) {
-        $stmt = mysqli_prepare($conn, "UPDATE blogs SET title=?, excerpt=?, content=?, category=?, author=?, status=?, meta_title=?, meta_description=?, meta_keywords=?, meta_robots=?, image=? WHERE id=?");
-        mysqli_stmt_bind_param($stmt, "sssssssssssi", $title, $excerpt, $content, $category, $author, $status, $meta_title, $meta_description, $meta_keywords, $meta_robots, $image_path, $id);
+        $stmt = mysqli_prepare($conn, "UPDATE blogs SET title=?, excerpt=?, content=?, category=?, author=?, status=?, meta_title=?, meta_description=?, meta_keywords=?, meta_robots=?, image=?, image_alt=? WHERE id=?");
+        mysqli_stmt_bind_param($stmt, "ssssssssssssi", $title, $excerpt, $content, $category, $author, $status, $meta_title, $meta_description, $meta_keywords, $meta_robots, $image_path, $image_alt, $id);
     } else {
-        $stmt = mysqli_prepare($conn, "UPDATE blogs SET title=?, excerpt=?, content=?, category=?, author=?, status=?, meta_title=?, meta_description=?, meta_keywords=?, meta_robots=? WHERE id=?");
-        mysqli_stmt_bind_param($stmt, "ssssssssssi", $title, $excerpt, $content, $category, $author, $status, $meta_title, $meta_description, $meta_keywords, $meta_robots, $id);
+        $stmt = mysqli_prepare($conn, "UPDATE blogs SET title=?, excerpt=?, content=?, category=?, author=?, status=?, meta_title=?, meta_description=?, meta_keywords=?, meta_robots=?, image_alt=? WHERE id=?");
+        mysqli_stmt_bind_param($stmt, "sssssssssssi", $title, $excerpt, $content, $category, $author, $status, $meta_title, $meta_description, $meta_keywords, $meta_robots, $image_alt, $id);
     }
 
     if (mysqli_stmt_execute($stmt)) {
@@ -161,7 +163,7 @@ if ($blogs_result) {
             <div class="col">
                 <div class="card h-100" style="border-radius:14px; padding:16px;">
                     <?php if (!empty($blog['image'])): ?>
-                        <img src="../<?php echo htmlspecialchars($blog['image']); ?>" alt="<?php echo htmlspecialchars($blog['title']); ?>" style="height:140px; object-fit:cover; border-radius:10px;">
+                        <img src="../<?php echo htmlspecialchars($blog['image']); ?>" alt="<?php echo htmlspecialchars($blog['image_alt'] ?: $blog['title']); ?>" style="height:140px; object-fit:cover; border-radius:10px;">
                     <?php endif; ?>
                     <div class="d-flex justify-content-between align-items-center mt-2">
                         <span class="badge" style="background:<?php echo $blog['status'] === 'published' ? '#e9f9ee' : '#fff4e0'; ?>; color:<?php echo $blog['status'] === 'published' ? '#1e7e34' : '#a66a00'; ?>;"><?php echo htmlspecialchars(ucfirst($blog['status'])); ?></span>
@@ -184,7 +186,8 @@ if ($blogs_result) {
                                 data-meta-title="<?php echo htmlspecialchars($blog['meta_title'] ?? ''); ?>"
                                 data-meta-description="<?php echo htmlspecialchars($blog['meta_description'] ?? ''); ?>"
                                 data-meta-keywords="<?php echo htmlspecialchars($blog['meta_keywords'] ?? ''); ?>"
-                                data-meta-robots="<?php echo htmlspecialchars($blog['meta_robots'] ?? ''); ?>">
+                                data-meta-robots="<?php echo htmlspecialchars($blog['meta_robots'] ?? ''); ?>"
+                                data-image-alt="<?php echo htmlspecialchars($blog['image_alt'] ?? ''); ?>">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
                             <a href="blogs.php?delete=<?php echo (int) $blog['id']; ?>"
@@ -239,6 +242,10 @@ if ($blogs_result) {
                             <div class="col-12">
                                 <label class="form-label" style="font-size:12.5px; color:#797979c5;">Cover image</label>
                                 <input type="file" name="image" class="form-control" accept="image/*">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Image Alt Text (for SEO & accessibility)</label>
+                                <input type="text" name="image_alt" class="form-control" placeholder="Describe the image, e.g. Man handing over an iPhone for cash in Dubai">
                             </div>
                             <div class="col-12"><hr></div>
                             <div class="col-12">
@@ -312,6 +319,10 @@ if ($blogs_result) {
                             <div class="col-12">
                                 <label class="form-label" style="font-size:12.5px; color:#797979c5;">Cover image (leave empty to keep current)</label>
                                 <input type="file" name="image" class="form-control" accept="image/*">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-size:12.5px; color:#797979c5;">Image Alt Text (for SEO & accessibility)</label>
+                                <input type="text" name="image_alt" id="editBlogImageAlt" class="form-control" placeholder="Describe the image, e.g. Man handing over an iPhone for cash in Dubai">
                             </div>
                             <div class="col-12"><hr></div>
                             <div class="col-12">
@@ -401,6 +412,7 @@ if ($blogs_result) {
                 document.getElementById('editBlogMetaDescription').value = btn.getAttribute('data-meta-description') || '';
                 document.getElementById('editBlogMetaKeywords').value = btn.getAttribute('data-meta-keywords') || '';
                 document.getElementById('editBlogMetaRobots').value = btn.getAttribute('data-meta-robots') || '';
+                document.getElementById('editBlogImageAlt').value = btn.getAttribute('data-image-alt') || '';
 
                 // Push the existing HTML content into CKEditor (not into the raw textarea)
                 var rawContent = btn.getAttribute('data-content') || '';

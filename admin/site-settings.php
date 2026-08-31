@@ -31,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $twitter_url            = trim($_POST['twitter_url'] ?? '');
     $linkedin_url           = trim($_POST['linkedin_url'] ?? '');
     $copyright_text         = trim($_POST['copyright_text'] ?? '');
+    $logo_alt               = trim($_POST['logo_alt'] ?? '');
+    $favicon_alt            = trim($_POST['favicon_alt'] ?? '');
 
     if ($site_title === '') {
         $error_msg = "Site title is required.";
@@ -71,13 +73,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $set_fields = "site_title=?, nav_home_label=?, nav_about_label=?, nav_quote_label=?,
                     nav_blogs_label=?, nav_testimonials_label=?, nav_contact_label=?,
                     footer_about_text=?, footer_phone=?, footer_whatsapp=?, footer_email=?, footer_address=?,
-                    facebook_url=?, instagram_url=?, twitter_url=?, linkedin_url=?, copyright_text=?";
-            $types  = "sssssssssssssssss";
+                    facebook_url=?, instagram_url=?, twitter_url=?, linkedin_url=?, copyright_text=?,
+                    logo_alt=?, favicon_alt=?";
+            $types  = "sssssssssssssssssss";
             $params = [
                 $site_title, $nav_home_label, $nav_about_label, $nav_quote_label,
                 $nav_blogs_label, $nav_testimonials_label, $nav_contact_label,
                 $footer_about_text, $footer_phone, $footer_whatsapp, $footer_email, $footer_address,
-                $facebook_url, $instagram_url, $twitter_url, $linkedin_url, $copyright_text
+                $facebook_url, $instagram_url, $twitter_url, $linkedin_url, $copyright_text,
+                $logo_alt, $favicon_alt
             ];
 
             if ($logo_path) {
@@ -137,16 +141,24 @@ function sv($s, $key) { return htmlspecialchars($s[$key] ?? ''); }
                 <label class="form-label fw-semibold">Logo</label>
                 <input type="file" name="logo" class="form-control" accept=".jpg,.jpeg,.png,.webp">
                 <?php if (!empty($s['logo'])): ?>
-                    <img src="../<?php echo sv($s, 'logo'); ?>" style="height:40px; margin-top:8px;">
+                    <img src="../<?php echo sv($s, 'logo'); ?>" alt="Current logo" style="height:40px; margin-top:8px;">
                 <?php endif; ?>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Logo alt text</label>
+                <input type="text" name="logo_alt" class="form-control" placeholder="e.g. SellMyPhoneDubai logo" value="<?php echo sv($s, 'logo_alt'); ?>">
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label fw-semibold">Favicon</label>
                 <input type="file" name="favicon" class="form-control" accept=".jpg,.jpeg,.png,.webp">
                 <small class="text-muted">Shown in the browser tab. Square image works best (e.g. 32x32 / 64x64).</small>
                 <?php if (!empty($s['favicon'])): ?>
-                    <img src="../<?php echo sv($s, 'favicon'); ?>" style="height:32px; margin-top:8px;">
+                    <img src="../<?php echo sv($s, 'favicon'); ?>" alt="Current favicon" style="height:32px; margin-top:8px;">
                 <?php endif; ?>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Favicon alt text</label>
+                <input type="text" name="favicon_alt" class="form-control" placeholder="e.g. SellMyPhoneDubai favicon" value="<?php echo sv($s, 'favicon_alt'); ?>">
             </div>
         </div>
 
@@ -191,9 +203,10 @@ function sv($s, $key) { return htmlspecialchars($s[$key] ?? ''); }
                 <input type="text" name="footer_phone" class="form-control" value="<?php echo sv($s, 'footer_phone'); ?>">
             </div>
             <div class="col-md-6 mb-3">
-                <label class="form-label">WhatsApp Number (display only)</label>
-                <input type="text" name="footer_whatsapp" class="form-control" value="<?php echo sv($s, 'footer_whatsapp'); ?>">
-            </div>
+                <label class="form-label">WhatsApp Number</label>
+            <input type="text" name="footer_whatsapp" class="form-control" value="<?php echo sv($s, 'footer_whatsapp'); ?>">
+            <small class="text-muted">With country code, e.g. +971 50 216 6562. Also used as the footer WhatsApp link.</small>
+                        </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label">Email</label>
                 <input type="email" name="footer_email" class="form-control" value="<?php echo sv($s, 'footer_email'); ?>">

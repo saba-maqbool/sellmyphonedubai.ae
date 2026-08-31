@@ -86,13 +86,13 @@ if ($brand_row = mysqli_fetch_assoc($brand_result)) {
                 onclick="<?php echo $onclick; ?>">
 
                 <div class="<?php echo $mediaClass; ?>">
-                    <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?> devices">
+                    <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['image_alt'] ?: ($item['title'] . ' devices')); ?>">
                 </div>
 
                 <div class="brand-card-body">
 
                     <div class="brand-icon">
-                        <img src="<?php echo htmlspecialchars($item['icon']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>">
+                        <img src="<?php echo htmlspecialchars($item['icon']); ?>" alt="<?php echo htmlspecialchars($item['icon_alt'] ?: $item['title']); ?>">
                     </div>
 
                     <div class="brand-card-text">

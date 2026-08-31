@@ -6,6 +6,7 @@ $chooseus_section = [
     'heading' => 'Why Choose <span>SellMyPhoneDubai</span>',
     'description' => 'Why choose SellMyPhoneDubai for your phone selling needs?',
     'image' => 'imgs/choos-us.png',
+    'image_alt' => 'Phones',
     'extra_1' => '4.9/5',
     'extra_2' => 'Trusted by 2500+ Happy Customers',
 ];
@@ -15,7 +16,7 @@ $stmt = mysqli_prepare($conn, "SELECT * FROM home_sections WHERE section_key = '
 mysqli_stmt_execute($stmt);
 $chooseus_result = mysqli_stmt_get_result($stmt);
 if ($chooseus_row = mysqli_fetch_assoc($chooseus_result)) {
-    foreach (['kicker', 'heading', 'description', 'image', 'extra_1', 'extra_2'] as $field) {
+    foreach (['kicker', 'heading', 'description', 'image', 'image_alt', 'extra_1', 'extra_2'] as $field) {
         if (!empty($chooseus_row[$field])) {
             $chooseus_section[$field] = $chooseus_row[$field];
         }
@@ -56,7 +57,7 @@ if ($chooseus_row = mysqli_fetch_assoc($chooseus_result)) {
         <div class="why-right">
             <div class="why-visual">
                 <div class="why-visual-circle"></div>
-                <img src="<?php echo htmlspecialchars($chooseus_section['image']); ?>" alt="Phones" class="why-visual-img">
+                <img src="<?php echo htmlspecialchars($chooseus_section['image']); ?>" alt="<?php echo htmlspecialchars($chooseus_section['image_alt']); ?>" class="why-visual-img">
             </div>
 
             <div class="why-rating-card">

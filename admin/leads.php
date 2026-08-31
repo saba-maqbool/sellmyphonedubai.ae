@@ -299,6 +299,7 @@ if ($brand_result) {
                             <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(110px, 1fr)); gap:8px;">
                                 <?php foreach ($photos as $photo): ?>
                                     <img src="../<?php echo htmlspecialchars($photo); ?>"
+                                        alt="Device photo"
                                         style="width:100%; height:110px; object-fit:cover; border-radius:8px; background:#f7f9fc; cursor:pointer;"
                                         onclick="window.open(this.src, '_blank')">
                                 <?php endforeach; ?>

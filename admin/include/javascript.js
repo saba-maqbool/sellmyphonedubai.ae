@@ -74,3 +74,7 @@ function closeSidebar() {
     document.getElementById('adminSidebar').classList.remove('sidebar-open');
     document.getElementById('sidebarOverlay').classList.remove('show');
 }
+function toggleSidebarGroup(btn) {
+    const group = btn.closest('.sidebar-group');
+    group.classList.toggle('open');
+}
