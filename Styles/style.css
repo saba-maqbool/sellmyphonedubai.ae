@@ -396,8 +396,9 @@ body{margin:0;font-family:'Plus Jakarta Sans', -apple-system, sans-serif;}
   .hero-quote-card{
     display:none;
   }
-  .hero-overlay{
-    background:linear-gradient(180deg, var(--navy) 0%, rgba(11,30,59,0.7) 55%, rgba(11,30,59,0.3) 100%);
+    .hero-bg{
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
   }
 }
 @media(max-width:768px){
@@ -2489,12 +2490,18 @@ p{
 }
 
 @media(max-width:991px){
-  .apple-hero-container{ text-align:center; justify-content:center; }
+  .apple-hero-container{ text-align:center; justify-content:center; margin-left: 0px; }
   .apple-hero-content{ max-width:640px; }
   .apple-hero-stats{ justify-content:center; }
   .apple-hero-cta-row{ justify-content:center; }
   .apple-hero-desc{ margin-left:auto; margin-right:auto; }
+
+  .apple-hero-bg{
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  }
 }
+  
 @media(max-width:768px){
   .apple-hero-section{ padding:28px 0; min-height:auto; }
   .apple-hero-container{
