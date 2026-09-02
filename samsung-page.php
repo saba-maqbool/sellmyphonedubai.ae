@@ -9,6 +9,7 @@
     }
 ?>
 <?php require_once ("Sections/samsung-hero.php"); ?>
+<?php require_once ("Sections/samsung-featured.php"); ?>
 <?php require_once ("Sections/samsung-catalog.php"); ?>
 <div class="samsung-page-catalog" id="samsung-catalog-wrap">
     <div class="section-header" style="text-align:center;">
@@ -17,7 +18,6 @@
     <?php require_once ("Sections/samsung.php"); ?>
 </div>
 <?php require_once ("Sections/modalform.php"); ?>
-<?php require_once ("Sections/samsung-featured.php"); ?>
 <?php require_once ("Sections/s-resalevalue.php"); ?>
 <?php require_once ("Sections/process.php"); ?>
 <?php require_once ("Sections/s-acceptance.php") ?>
