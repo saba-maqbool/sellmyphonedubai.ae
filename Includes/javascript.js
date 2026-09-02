@@ -1,3 +1,19 @@
+var STANDALONE_STEP_HEADINGS = {
+  2: 'Which <span>model</span> is your phone',
+  3: 'How much <span>storage</span> does it have',
+  4: "What's the <span>condition</span> of your phone",
+  5: 'Any <span>accessories</span> included?',
+  6: "Here's your <span>estimate</span>"
+};
+
+function updateStandaloneStepHeading(step){
+  var text = STANDALONE_STEP_HEADINGS[step];
+  if (!text) return;
+  var $appleHeading = $('#apple-step-heading');
+  var $samsungHeading = $('#samsung-step-heading');
+  if ($appleHeading.length) $appleHeading.html(text);
+  if ($samsungHeading.length) $samsungHeading.html(text);
+}
 function setTrackerStep(step){
   document.querySelectorAll('.step-tab').forEach(function(tab){
     var s = parseInt(tab.getAttribute('data-step'), 10);
@@ -11,6 +27,7 @@ function setTrackerStep(step){
       tab.disabled = false;
     }
   });
+   updateStandaloneStepHeading(step);
 }
 
 
@@ -618,4 +635,41 @@ function submitContactForm(event) {
     });
 
     return false;
+}
+
+function showAppleCatalog(e){
+    if (e) e.preventDefault();
+    var catalogWrap = document.getElementById('apple-catalog-wrap');
+    if (!catalogWrap) return;
+
+    catalogWrap.classList.add('is-active');
+    catalogWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function filterAppleSeries(seriesPrefix){
+    var catalogWrap = document.getElementById('apple-catalog-wrap');
+    if (!catalogWrap) return;
+
+    catalogWrap.classList.add('is-active');
+
+    var cards = document.querySelectorAll('#pills-home .model-card');
+    cards.forEach(function(card){
+        var name = (card.getAttribute('data-model-name') || '').toLowerCase();
+        var col = card.closest('.col');
+        if (name.indexOf(seriesPrefix.toLowerCase()) === 0) {
+            if (col) col.style.display = '';
+        } else {
+            if (col) col.style.display = 'none';
+        }
+    });
+
+    catalogWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function showSamsungCatalog(e){
+    if (e) e.preventDefault();
+    var catalogWrap = document.getElementById('samsung-catalog-wrap');
+    if (!catalogWrap) return;
+
+    catalogWrap.classList.add('is-active');
+    catalogWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }

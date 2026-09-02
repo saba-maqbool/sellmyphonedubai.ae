@@ -7,7 +7,7 @@
     <?php if (basename($_SERVER['PHP_SELF']) == 'apple-page.php'): ?>
     <meta name="robots" content="noindex, nofollow">
 <?php endif; ?>
-
+        
     <?php require_once(__DIR__ . "/get-site-settings.php"); ?>
 
     <title><?php echo htmlspecialchars($meta_title ?? $site_settings['site_title']); ?></title>
@@ -23,6 +23,9 @@
     <meta property="og:description" content="<?php echo htmlspecialchars($meta_description ?? ''); ?>">
     <meta property="og:image" content="<?php echo htmlspecialchars($meta_image ?? $site_settings['logo']); ?>">
     <meta property="og:url" content="<?php echo htmlspecialchars($canonical_url ?? ''); ?>">
+    <meta property="og:title" content="<?php echo htmlspecialchars($og_title ?? $meta_title); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($og_description ?? $meta_description); ?>">
+    <meta property="og:image" content="<?php echo htmlspecialchars($og_image ?? $meta_image); ?>">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo htmlspecialchars($meta_title ?? $site_settings['site_title']); ?>">

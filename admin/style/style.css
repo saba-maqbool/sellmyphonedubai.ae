@@ -237,7 +237,8 @@
     transition: max-height 0.25s ease;
 }
 .sidebar-group.open .sidebar-subnav {
-    max-height: 300px;
+    max-height: 420px;
+    overflow-y: auto;
 }
 .sidebar-subnav li a {
     padding-left: 38px !important;
@@ -245,6 +246,14 @@
 }
 .sidebar-subnav li a i {
     font-size: 14px !important;
+}
+.sidebar-subnav-divider {
+    padding: 10px 10px 4px 38px !important;
+    font-size: 10px !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    font-weight: 700;
 }
 
 .sidebar-logout {

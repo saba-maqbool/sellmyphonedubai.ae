@@ -17,30 +17,31 @@
             </thead>
             <tbody>
                 <tr class="comparison-highlight">
-                    <td><strong>SellMyPhoneDubai (Direct Buyer)</strong></td>
-                    <td>100% Free Doorstep Pickup</td>
-                    <td>Instant AED Cash / Bank Transfer</td>
-                    <td>30 – 60 Minutes Same-Day</td>
+                    <td><strong>SellMyPhoneDubai — Sell My Phone Online for Cash</strong></td>
+                    <td>100% Free Doorstep Pickup Anywhere in Dubai</td>
+                    <td>Instant AED Cash / Same-Day Bank Transfer</td>
+                    <td>30 – 60 Minutes, Same-Day Payment</td>
                 </tr>
                 <tr>
-                    <td><strong>Deira / Mall Phone Shops</strong></td>
-                    <td>No (Travel &amp; Parking Required)</td>
-                    <td>Cash (Subject to Heavy Bargaining)</td>
-                    <td>Half Day Wasted Traveling</td>
+                    <td><strong>Deira &amp; Mall Second-Hand Phone Shops</strong></td>
+                    <td>No — Travel &amp; Parking Required</td>
+                    <td>Cash, Subject to Heavy In-Store Bargaining</td>
+                    <td>Half a Day Wasted Traveling</td>
                 </tr>
                 <tr>
-                    <td><strong>Online Classified Ads</strong></td>
-                    <td>Unsafe Strangers at Your Door</td>
-                    <td>Uncertain / Risk of Scams</td>
-                    <td>3 to 14 Days of Time Wasters</td>
+                    <td><strong>Online Classified Ads (Dubizzle, etc.)</strong></td>
+                    <td>Unsafe Strangers Meeting at Your Door</td>
+                    <td>Uncertain — High Risk of Scams</td>
+                    <td>3 to 14 Days of Time-Wasting Messages</td>
                 </tr>
                 <tr>
                     <td><strong>Carrier / Store Trade-In Counters</strong></td>
-                    <td>No (Must Visit Retail Outlet)</td>
-                    <td>Locked Store Credit Only</td>
-                    <td>Must Buy New Expensive Device</td>
+                    <td>No — Must Visit a Retail Outlet</td>
+                    <td>Locked Store Credit Only, No Real Cash</td>
+                    <td>Only Valid If You Buy a New Expensive Device</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </section>
+                

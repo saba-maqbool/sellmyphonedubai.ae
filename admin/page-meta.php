@@ -18,20 +18,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $meta_description = trim($_POST['meta_description'] ?? '');
     $meta_keywords    = trim($_POST['meta_keywords'] ?? '');
     $meta_robots      = trim($_POST['meta_robots'] ?? 'index, follow');
+    $canonical_url    = trim($_POST['canonical_url'] ?? '');
 
     if (!array_key_exists($page_key, $pages)) {
         $error_msg = "Invalid page.";
     } else {
         $stmt = mysqli_prepare($conn, "
-            INSERT INTO page_meta (page_key, meta_title, meta_description, meta_keywords, meta_robots)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO page_meta (page_key, meta_title, meta_description, meta_keywords, meta_robots, canonical_url)
+            VALUES (?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
                 meta_title=VALUES(meta_title),
                 meta_description=VALUES(meta_description),
                 meta_keywords=VALUES(meta_keywords),
-                meta_robots=VALUES(meta_robots)
+                meta_robots=VALUES(meta_robots),
+                canonical_url=VALUES(canonical_url)
         ");
-        mysqli_stmt_bind_param($stmt, "sssss", $page_key, $meta_title, $meta_description, $meta_keywords, $meta_robots);
+        mysqli_stmt_bind_param($stmt, "ssssss", $page_key, $meta_title, $meta_description, $meta_keywords, $meta_robots, $canonical_url);
+
 
         if (mysqli_stmt_execute($stmt)) {
             $success_msg = "SEO meta for \"" . htmlspecialchars($pages[$page_key]) . "\" updated successfully.";
@@ -113,6 +116,21 @@ if (!array_key_exists($active, $pages)) $active = 'home';
                 value="<?php echo htmlspecialchars($r['meta_robots'] ?? 'index, follow'); ?>"
                 placeholder="e.g. index, follow">
             <small class="text-muted">Tells search engines whether to index/follow this page — e.g. "index, follow" (default, visible in search) or "noindex, nofollow" (hide completely).</small>
+        </div>
+                <div class="mb-3">
+            <label class="form-label fw-semibold">Robots</label>
+            <input type="text" name="meta_robots" class="form-control" maxlength="255"
+                value="<?php echo htmlspecialchars($r['meta_robots'] ?? 'index, follow'); ?>"
+                placeholder="e.g. index, follow">
+            <small class="text-muted">Tells search engines whether to index/follow this page — e.g. "index, follow" (default, visible in search) or "noindex, nofollow" (hide completely).</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Canonical URL</label>
+            <input type="url" name="canonical_url" class="form-control" maxlength="255"
+                value="<?php echo htmlspecialchars($r['canonical_url'] ?? ''); ?>"
+                placeholder="e.g. https://sellmyphonedubai.com/apple">
+            <small class="text-muted">The preferred URL for this page shown to Google. Leave empty to auto-use the page's own URL — only set this if this page's content also appears at another URL.</small>
         </div>
 
         <button type="submit" class="btn btn-primary mt-2">Save</button>

@@ -1,0 +1,1 @@
+<?php include __DIR__ . '/_header_common.php'; ?>

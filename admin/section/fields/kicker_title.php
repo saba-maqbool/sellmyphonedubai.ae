@@ -1,0 +1,3 @@
+<div class="mb-2"><label class="form-label">Kicker</label><input type="text" name="kicker" class="form-control" value="<?php echo htmlspecialchars($s['content_decoded']['kicker'] ?? ''); ?>"></div>
+<div class="mb-2"><label class="form-label">Heading</label><input type="text" name="heading" class="form-control" value="<?php echo htmlspecialchars($s['content_decoded']['heading'] ?? ''); ?>"></div>
+<div class="mb-2"><label class="form-label">Subtitle</label><textarea name="subtitle" class="form-control" rows="2"><?php echo htmlspecialchars($s['content_decoded']['subtitle'] ?? ''); ?></textarea></div>

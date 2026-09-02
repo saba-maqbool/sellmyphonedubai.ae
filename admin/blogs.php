@@ -357,99 +357,95 @@ if ($blogs_result) {
 
     <!-- CKEditor 4 (Full package) - loaded only here, only for the blog "Content" field -->
     <!-- "full" package includes Font Color, Background Color, Font Family/Size, Styles, Table, Image, etc. -->
-    <script src="https://cdn.ckeditor.com/4.25.2-lts/full/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
     <script>
-        var addBlogEditor = null;
-        var editBlogEditor = null;
+    var addBlogEditor = null;
+    var editBlogEditor = null;
 
-        document.addEventListener('DOMContentLoaded', function () {
-            // Init CKEditor on the Add-blog content field
-            addBlogEditor = CKEDITOR.replace('blogContent', {
-                height: 250,
-                toolbarGroups: [
-                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
-                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
-                    { name: 'links' },
-                    { name: 'insert' },
-                    '/',
-                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
-                    { name: 'styles' },
-                    { name: 'colors' },
-                    { name: 'tools' }
-                ],
-                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Form,Flash,Smiley,PageBreak,Iframe,ShowBlocks,About'
-            });
+    function ckBlogOptions() {
+        return {
+            height: 250,
+            toolbarGroups: [
+                { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                { name: 'links' },
+                { name: 'insert' },
+                '/',
+                { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
+                { name: 'styles' },
+                { name: 'colors' },
+                { name: 'tools' }
+            ],
+            removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Form,Flash,Smiley,PageBreak,Iframe,ShowBlocks,About'
+        };
+    }
 
-            // Init CKEditor on the Edit-blog content field
-            editBlogEditor = CKEDITOR.replace('editBlogContent', {
-                height: 250,
-                toolbarGroups: [
-                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
-                    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
-                    { name: 'links' },
-                    { name: 'insert' },
-                    '/',
-                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
-                    { name: 'styles' },
-                    { name: 'colors' },
-                    { name: 'tools' }
-                ],
-                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Form,Flash,Smiley,PageBreak,Iframe,ShowBlocks,About'
-            });
+    document.addEventListener('DOMContentLoaded', function () {
+        var addModal = document.getElementById('addBlogModal');
+        var editModal = document.getElementById('editBlogModal');
 
-            var editModal = document.getElementById('editBlogModal');
-            editModal.addEventListener('show.bs.modal', function (event) {
-                var btn = event.relatedTarget;
-                document.getElementById('editBlogId').value = btn.getAttribute('data-id');
-                document.getElementById('editBlogTitle').value = btn.getAttribute('data-title');
-                document.getElementById('editBlogExcerpt').value = btn.getAttribute('data-excerpt');
-                document.getElementById('editBlogCategory').value = btn.getAttribute('data-category');
-                document.getElementById('editBlogAuthor').value = btn.getAttribute('data-author');
-                document.getElementById('editBlogStatus').value = btn.getAttribute('data-status');
-                document.getElementById('editBlogMetaTitle').value = btn.getAttribute('data-meta-title') || '';
-                document.getElementById('editBlogMetaDescription').value = btn.getAttribute('data-meta-description') || '';
-                document.getElementById('editBlogMetaKeywords').value = btn.getAttribute('data-meta-keywords') || '';
-                document.getElementById('editBlogMetaRobots').value = btn.getAttribute('data-meta-robots') || '';
-                document.getElementById('editBlogImageAlt').value = btn.getAttribute('data-image-alt') || '';
-
-                // Push the existing HTML content into CKEditor (not into the raw textarea)
-                var rawContent = btn.getAttribute('data-content') || '';
-                if (editBlogEditor && editBlogEditor.status === 'ready') {
-                    editBlogEditor.setData(rawContent);
-                } else if (editBlogEditor) {
-                    editBlogEditor.on('instanceReady', function () {
-                        editBlogEditor.setData(rawContent);
-                    });
-                }
-            });
-
-            // Sync CKEditor's HTML back into the hidden textarea before each form submits
-            var addForm = document.getElementById('addBlogForm');
-            addForm.addEventListener('submit', function (e) {
-                if (addBlogEditor) {
-                    addBlogEditor.updateElement();
-                }
-                if (!document.getElementById('blogContent').value.trim()) {
-                    e.preventDefault();
-                    alert('Content is required.');
-                }
-            });
-
-            var editForm = document.getElementById('editBlogForm');
-            editForm.addEventListener('submit', function (e) {
-                if (editBlogEditor) {
-                    editBlogEditor.updateElement();
-                }
-                if (!document.getElementById('editBlogContent').value.trim()) {
-                    e.preventDefault();
-                    alert('Content is required.');
-                }
-            });
+        // Init Add-blog editor only once the Add modal is fully visible
+        addModal.addEventListener('shown.bs.modal', function () {
+            if (!addBlogEditor) {
+                addBlogEditor = CKEDITOR.replace('blogContent', ckBlogOptions());
+            }
         });
-    </script>
 
+        // Fill the fields first (show.bs.modal is fine for plain inputs)
+        editModal.addEventListener('show.bs.modal', function (event) {
+            var btn = event.relatedTarget;
+            document.getElementById('editBlogId').value = btn.getAttribute('data-id');
+            document.getElementById('editBlogTitle').value = btn.getAttribute('data-title');
+            document.getElementById('editBlogExcerpt').value = btn.getAttribute('data-excerpt');
+            document.getElementById('editBlogCategory').value = btn.getAttribute('data-category');
+            document.getElementById('editBlogAuthor').value = btn.getAttribute('data-author');
+            document.getElementById('editBlogStatus').value = btn.getAttribute('data-status');
+            document.getElementById('editBlogMetaTitle').value = btn.getAttribute('data-meta-title') || '';
+            document.getElementById('editBlogMetaDescription').value = btn.getAttribute('data-meta-description') || '';
+            document.getElementById('editBlogMetaKeywords').value = btn.getAttribute('data-meta-keywords') || '';
+            document.getElementById('editBlogMetaRobots').value = btn.getAttribute('data-meta-robots') || '';
+            document.getElementById('editBlogImageAlt').value = btn.getAttribute('data-image-alt') || '';
+
+            editModal.dataset.pendingContent = btn.getAttribute('data-content') || '';
+        });
+
+        // Init/refresh Edit editor only once the Edit modal is fully visible
+        editModal.addEventListener('shown.bs.modal', function () {
+            var rawContent = editModal.dataset.pendingContent || '';
+            if (!editBlogEditor) {
+                editBlogEditor = CKEDITOR.replace('editBlogContent', ckBlogOptions());
+                editBlogEditor.on('instanceReady', function () {
+                    editBlogEditor.setData(rawContent);
+                });
+            } else {
+                editBlogEditor.setData(rawContent);
+            }
+        });
+
+        var addForm = document.getElementById('addBlogForm');
+        addForm.addEventListener('submit', function (e) {
+            if (addBlogEditor) {
+                addBlogEditor.updateElement();
+            }
+            if (!document.getElementById('blogContent').value.trim()) {
+                e.preventDefault();
+                alert('Content is required.');
+            }
+        });
+
+        var editForm = document.getElementById('editBlogForm');
+        editForm.addEventListener('submit', function (e) {
+            if (editBlogEditor) {
+                editBlogEditor.updateElement();
+            }
+            if (!document.getElementById('editBlogContent').value.trim()) {
+                e.preventDefault();
+                alert('Content is required.');
+            }
+        });
+    });
+</script>
 </div>
 </body>
 

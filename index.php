@@ -13,6 +13,31 @@ $canonical_url    = "https://sellmyphonedubai.com/" . ($page === 'home' ? '' : $
 
 load_page_meta($conn, $page);
 
+// Check for a dynamically created custom page (Pages CRUD in admin)
+$system_pages = ['home', 'about', 'apple', 'samsung', 'blog', 'blog-details', 'testimonials', 'contact'];
+$custom_page  = null;
+
+if (!in_array($page, $system_pages)) {
+    $cp_stmt = mysqli_prepare($conn, "SELECT * FROM pages WHERE slug = ? AND status = 'published' LIMIT 1");
+    mysqli_stmt_bind_param($cp_stmt, "s", $page);
+    mysqli_stmt_execute($cp_stmt);
+    $cp_result  = mysqli_stmt_get_result($cp_stmt);
+    $custom_page = $cp_result ? mysqli_fetch_assoc($cp_result) : null;
+
+    if ($custom_page) {
+        $og_title       = $custom_page['og_title'] ?: $meta_title;
+        $og_description = $custom_page['og_description'] ?: $meta_description;
+        $og_image       = $custom_page['og_image'] ?: $meta_image;
+        $meta_title       = $custom_page['meta_title'] ?: $custom_page['title'];
+        $meta_description = $custom_page['meta_description'] ?: $meta_description;
+        $meta_keywords    = $custom_page['meta_keywords'] ?: $meta_keywords;
+        $meta_robots      = $custom_page['meta_robots'] ?: $meta_robots;
+        if (!empty($custom_page['canonical_url'])) {
+            $canonical_url = $custom_page['canonical_url'];
+        }
+    }
+}
+
 ob_start();
 
 switch ($page) {
@@ -27,6 +52,10 @@ switch ($page) {
     
     case 'apple':
         include 'apple-page.php';
+        break;
+
+    case 'samsung':
+        include 'samsung-page.php';
         break;
 
     case 'blog':
@@ -46,8 +75,12 @@ switch ($page) {
         break;
 
     default:
-        $meta_robots = "noindex, nofollow";
-        include '404.php';
+        if ($custom_page) {
+            include 'page.php';
+        } else {
+            $meta_robots = "noindex, nofollow";
+            include '404.php';
+        }
         break;
 }
 

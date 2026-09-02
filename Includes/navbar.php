@@ -43,7 +43,14 @@ require_once(__DIR__ . "/get-site-settings.php");
                 <li class="nav-item">
           <a class="nav-link <?= ($current_page == 'apple') ? 'active' : ''; ?>"
             href="apple">
-            Apple
+            Sell Apple
+          </a>
+        </li>
+
+                <li class="nav-item">
+          <a class="nav-link <?= ($current_page == 'samsung') ? 'active' : ''; ?>"
+            href="samsung">
+            Sell Samsung
           </a>
         </li>
         

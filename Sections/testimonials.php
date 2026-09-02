@@ -1,6 +1,12 @@
 <?php
 require_once(__DIR__ . "/../admin/include/db-connect.php");
 
+// A page can show its own Testimonials set (instead of the global homepage one) by
+// setting $testimonials_section_key before including this file — e.g. apple-page.php
+// sets it to 'apple_testimonials' and samsung-page.php sets it to 'samsung_testimonials'
+// so reviews don't mix between pages.
+$testimonials_section_key = $testimonials_section_key ?? 'testimonials';
+
 $testimonials_section = [
     'kicker' => 'TESTIMONIALS',
     'heading' => 'What Our Customers Say',
@@ -8,7 +14,8 @@ $testimonials_section = [
 ];
 $testimonial_items = [];
 
-$stmt = mysqli_prepare($conn, "SELECT * FROM home_sections WHERE section_key = 'testimonials' LIMIT 1");
+$stmt = mysqli_prepare($conn, "SELECT * FROM home_sections WHERE section_key = ? LIMIT 1");
+mysqli_stmt_bind_param($stmt, "s", $testimonials_section_key);
 mysqli_stmt_execute($stmt);
 $testimonials_result = mysqli_stmt_get_result($stmt);
 if ($testimonials_row = mysqli_fetch_assoc($testimonials_result)) {

@@ -1,0 +1,1 @@
+<div class="mb-2"><label class="form-label">Section Heading</label><input type="text" name="heading" class="form-control" value="<?php echo htmlspecialchars($s['content_decoded']['heading'] ?? ''); ?>"></div>

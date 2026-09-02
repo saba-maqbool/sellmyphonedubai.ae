@@ -66,7 +66,7 @@ if ($post) {
             <div class="blog-details-main">
                 <?php if (!empty($post['image'])): ?>
                 <div class="blog-details-img">
-                    <img src="<?php echo htmlspecialchars($post['image']); ?>" alt="<?php echo htmlspecialchars($post['image_alt'] ?: $post['title']); ?>">
+                    <img src="/<?php echo htmlspecialchars($post['image']); ?>" alt="<?php echo htmlspecialchars($post['image_alt'] ?: $post['title']); ?>">
                 </div>
                 <?php endif; ?>
 
@@ -82,7 +82,7 @@ if ($post) {
                     <?php foreach ($related_posts as $rp): ?>
                     <a href="<?php echo $base_path; ?>/blog/<?php echo urlencode($rp['slug']); ?>" class="blog-related-item">
                         <div class="blog-related-img">
-                            <img src="<?php echo htmlspecialchars($rp['image'] ?: $base_path . '/imgs/hero.webp'); ?>" alt="<?php echo htmlspecialchars($rp['image_alt'] ?: $rp['title']); ?>">
+                            <img src="/<?php echo htmlspecialchars($rp['image'] ?: $base_path . '/imgs/hero.webp'); ?>" alt="<?php echo htmlspecialchars($rp['image_alt'] ?: $rp['title']); ?>">
                         </div>
                         <div class="blog-related-info">
                             <h4><?php echo htmlspecialchars($rp['title']); ?></h4>

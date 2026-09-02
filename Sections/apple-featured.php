@@ -1,6 +1,25 @@
 <?php
 require_once(__DIR__ . "/../admin/include/db-connect.php");
 
+// Defaults — shown until content is edited on the "Sell iPhone Page" admin screen
+$featured_section = [
+    'kicker'      => 'BEST OF APPLE',
+    'heading'     => 'Top Apple Devices We Buy',
+    'description' => 'Sell your iPhone in Dubai at competitive market prices with our easy device valuation service. We buy popular Apple devices including iPhone 17 Pro Max, iPhone 17 Pro, iPhone 17 Air, iPhone 16 Pro Max, and other iPhone models.',
+];
+
+$stmt = mysqli_prepare($conn, "SELECT * FROM home_sections WHERE section_key = 'apple_featured' LIMIT 1");
+mysqli_stmt_execute($stmt);
+$featured_section_result = mysqli_stmt_get_result($stmt);
+if ($featured_section_row = mysqli_fetch_assoc($featured_section_result)) {
+    foreach (['kicker', 'heading', 'description'] as $field) {
+        if (!empty($featured_section_row[$field])) {
+            $featured_section[$field] = $featured_section_row[$field];
+        }
+    }
+}
+
+// Featured models themselves stay fully dynamic — pulled live from models/model_pricing
 $featured_apple_models = [];
 $featured_result = mysqli_query($conn, "
     SELECT m.id, m.model_name, m.image, mp.base
@@ -18,9 +37,9 @@ if ($featured_result) {
 ?>
 <section class="apple-featured-section" id="apple-featured-section">
     <div class="section-header">
-        <span class="section-tag">BEST OF APPLE</span>
-        <h2 class="section-title">Top Apple Devices We Buy</h2>
-        <p class="section-subtitle">Best market prices for the most in-demand Apple devices in Dubai</p>
+        <span class="section-tag"><?php echo htmlspecialchars($featured_section['kicker']); ?></span>
+        <h2 class="section-title"><?php echo $featured_section['heading']; ?></h2>
+        <p class="section-subtitle"><?php echo htmlspecialchars($featured_section['description']); ?></p>
     </div>
 
     <?php if (!empty($featured_apple_models)): ?>
@@ -44,7 +63,7 @@ if ($featured_result) {
 function quickSelectAppleModel(modelId) {
     var catalogWrap = document.getElementById('apple-catalog-wrap');
     if (catalogWrap) {
-        catalogWrap.style.display = 'block';
+        catalogWrap.classList.add('is-active');
         catalogWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     setTimeout(function () {
