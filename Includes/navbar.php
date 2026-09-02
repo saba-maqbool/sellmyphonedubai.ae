@@ -81,6 +81,14 @@ require_once(__DIR__ . "/get-site-settings.php");
             <?php echo htmlspecialchars($site_settings['nav_contact_label']); ?>
           </a>
         </li>
+           <li class="nav-item">
+          <a class="nav-link nav-whatsapp-link"
+            href="https://wa.me/<?php echo preg_replace('/\D/', '', $site_settings['footer_whatsapp']); ?>"
+            target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+            <?php echo htmlspecialchars($site_settings['footer_whatsapp']); ?>
+          </a>
+        </li>
       </ul>
     </div>
 
