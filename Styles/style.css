@@ -2531,6 +2531,7 @@ p{
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-line-clamp:4;
+    line-clamp: 4;
     overflow:hidden;
   }
   .apple-hero-cta-row{
@@ -2555,7 +2556,7 @@ p{
   .apple-hero-container{ padding:0 14px; gap:10px; }
   .apple-hero-kicker{ font-size:7.5px; }
   .apple-hero-title{ font-size:16px; line-height:1.25; margin:0 0 6px; }
-  .apple-hero-desc{ font-size:10.5px; line-height:1.4; margin:0 0 10px; -webkit-line-clamp:4; }
+  .apple-hero-desc{ font-size:10.5px; line-height:1.4; margin:0 0 10px; -webkit-line-clamp:4;line-clamp: 4; }
   .apple-hero-btn-primary, .apple-hero-btn-outline{ font-size:9px; padding:6px 9px; }
   .apple-hero-visual{ margin-top:0; }
   .apple-hero-img-wrap{ padding:4px; }
@@ -2564,7 +2565,7 @@ p{
 @media(max-width:380px){
   .apple-hero-kicker{ font-size:7px; }
   .apple-hero-title{ font-size:14.5px; }
-  .apple-hero-desc{ font-size:10px; line-height:1.35; -webkit-line-clamp:3; }
+  .apple-hero-desc{ font-size:10px; line-height:1.35; -webkit-line-clamp:3; line-clamp: 4;}
   .apple-hero-btn-primary, .apple-hero-btn-outline{ font-size:8.5px; padding:5px 8px; }
   .apple-hero-img{ max-height:170px; }
 }
@@ -2931,6 +2932,7 @@ p{
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-line-clamp:3;
+    line-clamp: 4;
     overflow:hidden;}
     .series-grid{
         grid-template-columns: repeat(3, 1fr);
